@@ -1,0 +1,254 @@
+@import "../../variable.css";
+
+.navbarContainer {
+    background-color: rgba(24, 24, 24, 0.2);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    max-width: 2000px;
+    z-index: 3;
+}
+
+.navbarContainer:hover {
+    background-color: rgba(24, 24, 24, 0.5);
+    transition: all 0.5s ease-out;
+}
+
+.navbarContainer--noOpacity {
+    background-color: black;
+}
+
+.navbarContainer--noOpacity:hover {
+    background-color: black;
+}
+
+.navbar {
+    z-index: 4;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--maxWidthNav);
+    min-width: var(--minWidth);
+}
+
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex: 2;
+    padding: 0 0 0 10px;
+}
+
+.navbar__logo img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.navbar__search {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar__search input {
+    width: 90%;
+    height: 30px;
+    border: none;
+}
+
+.navbar__searchBTN {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(224, 224, 224);
+    width: 10%;
+    height: 32px;
+}
+
+.navbar__searchBTN img {
+    width: 80%;
+    height: 80%;
+}
+
+.navbar__menuIcon {
+    display: none;
+}
+
+.navbar__menu {
+    display: flex;
+    align-items: center;
+
+
+    list-style: none;
+    flex: 3;
+    padding: 0 30px 0 30px;
+}
+
+.navbar__menuList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    list-style: none;
+    width: 100%;
+}
+
+.navbar__menu li {
+    text-align: center;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar__menuListItem {
+    padding: 0.5rem 1rem;
+}
+
+.navbar__menuListItem:hover, .navbar__menuBtn:hover {
+    border-bottom: 2px solid #fff;
+    transition: all 0.2s ease-out;
+}
+
+.navbar__menuLoginContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+}
+
+.navbar__menuUserIcon {
+    width: 30px;
+    height: 25px;
+    margin-right: 7px;
+}
+
+.navbar__menuArrowIcon {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.navbar__menuLogin {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top:35px;
+    width: 200px;
+    z-index: 999;
+    background-color: #e1e1e1;
+    font-size: 1rem;
+}
+.navbar__menuLoginIcon{
+    width: 25px;
+    height: 25px;
+    margin-right: 15px;
+}
+.navbar__menuLogin li{
+    cursor: pointer;
+    padding: 7px;
+}
+.navbar__menuLoginLink{
+    text-transform: uppercase;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.navbar__menuLogin li:hover{
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transform: scale(104%);
+}
+
+.navbar__menu--mobile {
+
+}
+
+@media (max-width: 1200px) {
+    .navbar {
+        height: 80px;
+    }
+
+    .navbar__menu {
+        flex: 0.3;
+        justify-content: flex-end;
+        padding: 0 5px 0 10px;
+    }
+
+    .navbar__menuList {
+        display: flex;
+        flex-direction: column;
+        width: 0;
+        height: 100vh;
+        position: absolute;
+        top: 65px;
+        left: -100%;
+        opacity: 1;
+        transition: all 0.5s ease;
+        padding: 0;
+    }
+
+    .navbar__menuList li {
+        height: 100px;
+        width: 100%;
+    }
+
+    .navbar__menu li a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .navbar__menu li a:hover {
+        background-color: white;
+        color: black;
+        border-bottom: none;
+        transition: all 0.2s ease-out;
+    }
+
+    .navbar__menuList--active {
+        width: 100%;
+        justify-content: start;
+        background: #202020;
+        left: 0;
+        transition: all 0.5s ease;
+        /*z-index: 999;*/
+    }
+
+    .navbar__menuIcon {
+        display: block;
+        cursor: pointer;
+        max-width: 30px;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 800px) {
+    .navbar__search input {
+        height: 20px;
+    }
+
+    .navbar__searchBTN {
+        height: 22px;
+    }
+
+}

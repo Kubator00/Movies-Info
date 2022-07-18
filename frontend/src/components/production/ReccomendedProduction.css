@@ -1,0 +1,36 @@
+.production__recommendedContainer{
+    width: 500px;
+    position: sticky;
+    top:0;
+    height: 800px;
+}
+.production__recommendedContainer h2{
+    font-size: 2rem;
+}
+.production_recommended{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.production__recommendedCard{
+    display: flex;
+    justify-content: center;
+    flex:50%;
+    padding-bottom: 20px;
+}
+.production__recommendedCardLink{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.production__recommendedCardLink:hover{
+    transform: scale(1.05);
+    transition-duration: 0.5s;
+}
+.production__recommendedImg{
+    width: 200px;
+    height: 300px;
+}

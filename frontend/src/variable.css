@@ -1,0 +1,5 @@
+:root {
+    --backgroundColor: rgb(244,244,244);
+    --minWidth: 400px;
+    --maxWidthNav: 1400px;
+}

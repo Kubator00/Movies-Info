@@ -1,0 +1,137 @@
+.home {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    top: -100px;
+}
+
+.home__banner {
+    width: 100%;
+    height: 600px;
+    max-width: 2000px;
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home__bannerItem {
+    position: absolute;
+    object-fit: fill;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition-duration: 1s;
+}
+
+.home__bannerItem--acitve {
+    opacity: 1;
+    transition-duration: 1s;
+    transform: scale(1);
+}
+
+.home__bannerItem img {
+    position: absolute;
+    object-fit: fill;
+    width: 100%;
+    height: 100%;
+}
+
+.home__bannerArrow {
+    z-index: 100;
+    padding: 0 20px 0 20px;
+    cursor: pointer;
+}
+
+.home__bannerArrow img {
+    background-color: rgba(24, 24, 24, 0.5);
+    width: 50px;
+    border: 0 solid;
+    padding: 7px;
+    border-radius: 25px;
+}
+
+
+.home__bannerInfo {
+    position: absolute;
+    color: white;
+    left: 30%;
+    transform: translateX(-70%);
+    bottom: 80px;
+    text-shadow: 1px 1px #1e1e1e;
+}
+
+.home__bannerInfo h1 {
+    padding: 5px;
+    background-color: rgba(24, 24, 24, 0.2);
+}
+
+.home__smallSliderContainer {
+    position: relative;
+    height: 300px;
+    width: var(--smallSliderWidth);
+    top: -40px;
+    z-index: 2;
+}
+
+.home__news {
+    max-width: var(--maxWidthNav);
+    width: 100%;
+    background: linear-gradient(0deg, rgba(242, 239, 239, 1) 0%, rgba(186, 186, 186, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home__premiersContainer {
+    width: 100%;
+    background-color:black;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 600px;
+}
+.home__premiers {
+    width: 100%;
+    height: 100%;
+    max-width: var(--maxWidthNav);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-bottom: 350px;
+}
+.home__premiers >h2{
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
+
+
+@media (max-width: 800px) {
+    .home__banner {
+        height: 300px;
+    }
+    .home__bannerInfo{
+        bottom: 30px;
+        left: 20px;
+    }
+
+    .home__bannerArrow img {
+        width: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .home__banner {
+        height: 200px;
+    }
+
+}
