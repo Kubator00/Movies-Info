@@ -1,6 +1,6 @@
-export const server = 'http://localhost:3010';
-export const serverFiles = 'http://localhost:3010/public/';
-export const serverImages = 'http://localhost:3010/public/img';
+export const server = 'http://192.168.1.11:3010';
+export const serverFiles = 'http://192.168.1.11:3010/public/';
+export const serverImages = 'http://192.168.1.11:3010/public/img';
 
 export default {
     production:{
