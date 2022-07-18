@@ -24,15 +24,13 @@
 .production__bannerBackground {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     text-transform: uppercase;
     min-height: 300px;
 }
 
 .production__bannerContainer {
-    width: 100%;
-    height: 100%;
     color: white;
     position: relative;
     display: flex;
@@ -103,10 +101,16 @@
     border-bottom: 2px solid #e8e8e8;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+
 }
 
 .production__detailsTableItemKey {
-    width: 120px;
+    flex-basis: 25%;
+}
+
+.production__detailsTableItemValue {
+    flex-basis: 75%;
 }
 
 .production__starImg {
@@ -121,6 +125,7 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    justify-content: center;
 }
 
 .production__rating h2 {
@@ -177,4 +182,70 @@
     flex-direction: row;
     justify-content: space-between;
     position: relative;
+}
+
+
+@media (max-width: 1200px) {
+    .production__main {
+        flex-direction: column;
+        height: auto;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .production__ytFrame {
+        width: 90%;
+        height: 400px;
+        padding: 0 5%;
+    }
+
+    .production__bannerBackground {
+        min-height: 200px;
+    }
+
+
+    .production__second {
+        flex-direction: column;
+    }
+
+    .production__detailsTableItem {
+        width: 90%;
+    }
+
+    .production__starImg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .production__ratingRate {
+        font-size: 1.5rem;
+    }
+
+    .production__bannerInfo {
+        /*max-width: 70%;*/
+        font-size: 0.8rem;
+    }
+
+    .production__banner {
+        min-height: 240px;
+    }
+}
+
+@media (max-width: 600px) {
+    .production__bannerInfo {
+        font-size: 0.6rem;
+    }
+
+    .production__ytFrame {
+        height: 200px;
+    }
+
+    .production__userRatingStarImg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .production__userRating h3 {
+        font-size: 0.8rem;
+    }
 }

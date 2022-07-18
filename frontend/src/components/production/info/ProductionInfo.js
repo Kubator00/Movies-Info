@@ -59,17 +59,17 @@ export default function ProductionInfo() {
                     <TrailerFrame url={trailerUrl}/>
                     <div className={'production__detailsTable'}>
                         <ProductionRating id={id}/>
-                        <p className={'production__detailsTableItem'}>{shortDescription}.</p>
+                        <p className={'production__detailsTableItem'}>{shortDescription}</p>
                         <p className={'production__detailsTableItem'}><b
                             className={'production__detailsTableItemKey'}>Release
-                            date</b> {releaseDate.getUTCFullYear()}-{releaseDate.getUTCMonth() + 1}-{releaseDate.getUTCDate()}
+                            date</b>  <span className={'production__detailsTableItemValue'}>{releaseDate.getUTCFullYear()}-{releaseDate.getUTCMonth() + 1}-{releaseDate.getUTCDate()}</span>
                         </p>
                         <p className={'production__detailsTableItem'}><b
-                            className={'production__detailsTableItemKey'}>Director</b> {directors}</p>
+                            className={'production__detailsTableItemKey'}>Director</b> <span className={'production__detailsTableItemValue'}> {directors}</span></p>
                         <p className={'production__detailsTableItem'}><b
-                            className={'production__detailsTableItemKey'}>Writers</b> {writers}</p>
+                            className={'production__detailsTableItemKey'}>Writers</b>  <span className={'production__detailsTableItemValue'}>{writers}</span></p>
                         <p className={'production__detailsTableItem'}><b
-                            className={'production__detailsTableItemKey'}>Stars</b> {mainStars}</p>
+                            className={'production__detailsTableItemKey'}>Stars</b> <span className={'production__detailsTableItemValue'}>{mainStars}</span></p>
                     </div>
                 </div>
             </div>

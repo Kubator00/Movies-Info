@@ -34,3 +34,17 @@
     width: 200px;
     height: 300px;
 }
+
+@media(max-width: 1200px){
+    .production__recommendedContainer{
+        width: 100%;
+    }
+    .production__recommendedCard{
+        flex-basis: 25%;
+    }
+}
+@media(max-width: 900px){
+    .production__recommendedCard{
+        flex-basis: 40%;
+    }
+}

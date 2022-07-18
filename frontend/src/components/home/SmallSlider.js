@@ -13,9 +13,9 @@ const Card = (props) => {
         <div className={'smallSliderImg'}>
             <img src={`${serverImages}/news/${id}/${img}`} alt={'a'}/>
         </div>
-        <p>
+        <div className={'smallSliderName'}>
             {name}
-        </p>
+        </div>
     </Link>
 }
 

@@ -103,7 +103,13 @@
     :root {
         --bigSliderMarginCard: 20px;
     }
-    .home__bigSliderContainer {
+}
+@media (max-width: 600px) {
+
+    .home__bigSliderContainer{
         height: 200px;
+    }
+    .home__bigSliderCard {
+        width: 100px;
     }
 }

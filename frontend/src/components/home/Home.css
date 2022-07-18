@@ -61,8 +61,7 @@
 .home__bannerInfo {
     position: absolute;
     color: white;
-    left: 30%;
-    transform: translateX(-70%);
+    left: 20%;
     bottom: 80px;
     text-shadow: 1px 1px #1e1e1e;
 }
@@ -115,6 +114,7 @@
 }
 
 
+
 @media (max-width: 800px) {
     .home__banner {
         height: 300px;
@@ -130,8 +130,15 @@
 }
 
 @media (max-width: 600px) {
-    .home__banner {
-        height: 200px;
+    .home__premiersContainer{
+        height: 300px;
+        font-size: 0.7rem;
     }
-
+    .home__premiers h2{
+        font-size: 1.5rem;
+    }
+    .home__smallSliderContainer {
+        height: 150px;
+        top: -10px;
+    }
 }
