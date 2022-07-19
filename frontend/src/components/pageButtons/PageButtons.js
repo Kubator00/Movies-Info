@@ -30,7 +30,7 @@ const PageButtons = (props) => {
                 {
                     (lastNumber > 1 && page !== 1) &&
                     <Link to={`?page=${page - 1}${restUrl}`}>
-                        <img src='./icons/angle-left.svg' class='pagebuttons-nextbutton' alt='strzałka w lewo'/>
+                        <img src='./icons/angle-left.svg' class='pagebuttons-nextbutton' alt='left arrow'/>
                     </Link>
                 }
 
@@ -74,7 +74,7 @@ const PageButtons = (props) => {
                 (lastNumber > 1 && page !== lastNumber) &&
                 <Link to={`?page=${page + 1}${restUrl}`}>
                     <img src='./icons/angle-right.svg' className='pagebuttons-nextbutton'
-                         alt='strzałka w prawo'/>
+                         alt='right arrow'/>
                 </Link>
 
             }

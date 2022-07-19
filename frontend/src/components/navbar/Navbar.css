@@ -15,11 +15,11 @@
 }
 
 .navbarContainer--noOpacity {
-    background-color: black;
+    background-color: rgb(24, 24, 24);
 }
 
 .navbarContainer--noOpacity:hover {
-    background-color: black;
+    background-color: rgb(24, 24, 24);
 }
 
 .navbar {

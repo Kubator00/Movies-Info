@@ -32,9 +32,11 @@ export default function News() {
                                    alt={'background'}/>}
             <div className={'news__content'} dangerouslySetInnerHTML={{__html: htmlContent}}/>
 
-            <div className={'news__author'}> <b>Author:</b> {author}</div>
-            <h2>News</h2>
-            <SmallSlider containerClassName={'news__smallSliderContainer'}/>
+            <div className={'news__author'}><b>Author:</b> {author}</div>
+            <div className={'news__smallSlider'}>
+                <h2>News</h2>
+                <SmallSlider containerClassName={'news__smallSliderContainer'}/>
+            </div>
         </div>
     );
 }

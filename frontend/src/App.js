@@ -10,6 +10,7 @@ import Login from "./components/login/Login";
 import MovieList from "./components/production/list/MovieList";
 import SeriesList from "./components/production/list/SeriesList";
 import SearchProductions from "./components/search/SearchProductions";
+import Footer from "./components/footer/Footer";
 
 
 const IsHomePage = ({value}) => {
@@ -50,7 +51,7 @@ function App() {
                             <Route path='/news' exact element={<News/>}/>
                         </Route>
                     </Routes>
-
+                    <Footer/>
 
                 </Wrapper>
             </BrowserRouter>

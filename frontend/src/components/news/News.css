@@ -14,13 +14,20 @@
     justify-content: center;
     align-items: flex-start;
 }
-.news__author{
-padding: 30px 0 30px 0;
+
+.news__author {
+    padding: 30px 0 30px 0;
 }
-.news__smallSliderContainer{
-    width: 100%;
+
+.news__smallSlider{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
+.news__smallSliderContainer {
+    width: 90%;
+    height: 300px;
+    z-index: 2;
+}
+
