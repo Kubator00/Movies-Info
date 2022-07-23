@@ -42,7 +42,7 @@ export default function ProductionInfo() {
     }, [searchParams])
 
     useEffect(() => {
-        setReleaseDate(new Date(releaseDateString));
+        setReleaseDate(new Date(parseInt(releaseDateString)));
     }, [releaseDateString]);
 
     if (!completed)

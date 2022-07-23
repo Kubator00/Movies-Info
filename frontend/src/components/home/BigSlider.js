@@ -9,7 +9,7 @@ import { serverImages} from "../../api";
 import Slider from "react-slick";
 
 const Card = (props) => {
-    const {name, directoryName} = props;
+    const {name, directoryName} = props.production[0];
     const link = encodeURI(`/movie?name=${name}`);
     return <Link to={link} className={'bigSlider__card'}>
         <div className={'home__bigSliderImgContainer'}>

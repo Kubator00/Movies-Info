@@ -19,7 +19,7 @@ const Card = (props) => {
                 </div>
                 <div className={'productionList__info'}>
                     <h2>{name}</h2>
-                    {new Date(releaseDateString).getFullYear()}
+                    {new Date(parseInt(releaseDateString)).getFullYear()}
                 </div>
             </div>
             <div className={'productionList__cardLeftSide'}>

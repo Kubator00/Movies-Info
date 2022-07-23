@@ -1,42 +1,41 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
+import api, {serverGraphQl} from "../../api";
 import Axios from "axios"
+import {gql, request} from "graphql-request";
 
 export const fetchProductionUserRating = createAsyncThunk('movieUserRating/fetch', async(props) => {
     const {id} = props;
-    return await Axios(
-        {
-            method: 'post',
-            url: api.production.userRating,
-            headers: {
-                "X-USER-TOKEN": localStorage.getItem('token'),
-                "X-EMAIL": localStorage.getItem('email')
-            },
-            data: {
-                movieId: id
+    const query = gql`
+       {
+            productionRating(
+                productionId:"${id}",
+                userToken: "${localStorage.getItem('token')}", 
+                userEmail: "${localStorage.getItem('email')}"
+            )
+            {
+                rating
             }
-        }).then(result => {
-        return result.data;
-    })
+       }`
+
+    return await request(serverGraphQl, query).then((data) => data);
+
 });
 
 export const setProductionUserRating = createAsyncThunk('movieUserRating/set', async(props) => {
     const {id, rating} = props;
-    return await Axios(
-        {
-            method: 'put',
-            url: api.production.userRating,
-            headers: {
-                "X-USER-TOKEN": localStorage.getItem('token'),
-                "X-EMAIL": localStorage.getItem('email')
-            },
-            data: {
-                movieId: id,
-                rating: rating
+    const query = gql`
+       mutation{
+            addRating(
+                productionId:"${id}",
+                newRating: ${rating},
+                userToken: "${localStorage.getItem('token')}", 
+                userEmail: "${localStorage.getItem('email')}"
+            ){
+                rating
             }
-        }).then(result => {
-        return rating;
-    })
+       }`
+
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 const initialState = {
@@ -50,7 +49,7 @@ export const productionUserRatingSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchProductionUserRating.fulfilled, (state, action) => {
-            state.rating = action.payload.rating;
+            state.rating = action.payload.productionRating.rating;
             state.error = '';
             state.completed = true;
         })
@@ -64,7 +63,7 @@ export const productionUserRatingSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(setProductionUserRating.fulfilled, (state, action) => {
-            state.rating = action.payload;
+            state.rating = action.payload.addRating.rating;
             state.error = '';
             state.completed = true;
         })

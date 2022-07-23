@@ -1,20 +1,25 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
-import Axios from "axios"
+import {serverGraphQl} from "../../api";
+import {gql, request} from "graphql-request";
 
 export const fetchProductionList = createAsyncThunk('production/list', async (props) => {
     const {page, pageSize, orderBy, descending, category} = props;
-    return await Axios.get(api.production.list, {
-        params: {
-            page: page,
-            pageSize: pageSize,
-            orderBy: orderBy,
-            descending: descending,
-            category: category
+    const query = gql`{
+    numberOfProductions(category:"${category}")
+      productionList(page:${page},pageSize:${pageSize},orderBy:"${orderBy}",descending:"${descending}",category:"${category}"){
+        _id,
+        name,
+        category,
+        directoryName,
+        releaseDate,
+        rating{
+          rate,
+          numberOfRates
         }
-    }).then(result => {
-        return result.data;
-    })
+      }
+    }
+   `
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 
@@ -28,9 +33,10 @@ export const productionListSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchProductionList.fulfilled, (state, action) => {
-            state.data = action.payload.data;
-            state.numberOfRows = action.payload.numberOfRows;
-            state.category = action.payload.category;
+            console.log(action.payload)
+            state.data = action.payload.productionList;
+            state.numberOfRows = action.payload.numberOfProductions;
+            state.category = action.payload.productionList[0]?.category;
             state.error = '';
             state.completed = true;
         })

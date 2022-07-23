@@ -7,15 +7,18 @@ module.exports = mongoose.model('productions', {
     name: {
         type: String
     },
-    nameUrl: {
+    trailerUrl: {
         type: String
     },
     releaseDate: {
         type: Date
     },
     rating: {
-        rate: Number,
-        numberOfRates: Number
+        rate: {type: Number},
+        numberOfRates: {type: Number}
+    },
+    directors: {
+        type: String
     },
     writers: {
         type: String

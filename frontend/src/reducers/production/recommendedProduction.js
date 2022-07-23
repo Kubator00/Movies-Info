@@ -1,19 +1,20 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
-import Axios from "axios"
+import  {serverGraphQl} from "../../api";
+import {gql, request} from "graphql-request";
 
 
 
 export const fetchRecommendedProductions = createAsyncThunk('recommendedProduction/fetch', async(props) => {
-    const {productionId,limit} = props;
-    return await Axios.get(api.production.recommended, {
-        params: {
-            productionId: productionId,
-            limit: limit,
+    const {productionId,limit=4} = props;
+    const query = gql`
+      {
+          recommendedProductionsList(productionId:"${productionId}", limit: ${limit}){
+            name,
+            category,
+            directoryName,
         }
-    }).then(result => {
-        return result.data;
-    })
+      }`
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 const initialState = {
@@ -33,7 +34,7 @@ export const recommendedProductionsSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchRecommendedProductions.fulfilled, (state, action) => {
-            state.data = action.payload;
+            state.data = action.payload.recommendedProductionsList;
             state.error = '';
             state.completed = true;
         })

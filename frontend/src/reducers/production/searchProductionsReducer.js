@@ -1,28 +1,34 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
-import Axios from "axios"
+import  {serverGraphQl} from "../../api";
+import {gql, request} from "graphql-request";
 
 
 export const fetchSearchProductions = createAsyncThunk('searchProductions/fetch', async (props) => {
     const {keyword} = props;
-    return await Axios.get(api.production.search, {
-        params: {
-            keyword: keyword,
-        }
-    }).then(result => {
-        return result.data;
-    })
+    const query = gql`
+        {
+          searchProduction(name: "${keyword}") {
+            name,
+            category,
+            directoryName,
+          }
+        }`
+
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
-export const fetchRecommendedProductions = createAsyncThunk('searchProductions/recommendedProductions', async(props) => {
+export const fetchRecommendedProductions = createAsyncThunk('searchProductions/recommendedProductions', async (props) => {
     const {limit} = props;
-    return await Axios.get(api.production.recommended, {
-        params: {
-            limit: limit,
+    const query = gql`
+      {
+        recommendedProductionsList(limit:${limit}){
+            name,
+            category,
+            directoryName,
         }
-    }).then(result => {
-        return result.data;
-    })
+      }`
+
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 const initialState = {
@@ -47,8 +53,8 @@ export const searchProductionsSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchSearchProductions.fulfilled, (state, action) => {
-            state.foundProductions = action.payload;
-            state.numberOfResult = action.payload.length;
+            state.foundProductions = action.payload.searchProduction;
+            state.numberOfResult = action.payload.searchProduction.length;
             state.error = '';
             state.completed = true;
         })
@@ -62,7 +68,7 @@ export const searchProductionsSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchRecommendedProductions.fulfilled, (state, action) => {
-            state.recommendedProductions = action.payload;
+            state.recommendedProductions = action.payload.recommendedProductionsList;
             state.error = '';
             state.completed = true;
         })

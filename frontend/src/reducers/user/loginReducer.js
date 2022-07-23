@@ -1,32 +1,42 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
+import api, {serverGraphQl} from "../../api";
 import Axios from "axios"
+import {gql, GraphQLClient, request} from "graphql-request";
 
 export const fetchLogin = createAsyncThunk('user/login', async (props, {rejectWithValue}) => {
+
     const {email, password} = props;
-    try {
-        const response = await Axios.post(api.user.login, {
-            email: email,
-            password: password
+    const client = new GraphQLClient(serverGraphQl);
+    const query = gql`
+        mutation {
+            login(email: "${email}", password: "${password}") {
+                    email,
+                    login,
+                    token,
+                    isAdmin        
+                }
+            }`
+    return await client.request(query)
+        .then(data => {
+            return data.login[0];
+        }).catch((err) => {
+            return rejectWithValue(err.response.errors[0].message)
         });
-        return response.data
-    } catch (err) {
-        return rejectWithValue(err.response.data)
-    }
 })
 
 export const fetchRegister = createAsyncThunk('user/register', async (props, {rejectWithValue}) => {
     const {login, email, password} = props;
-    try {
-        const response = await Axios.post(api.user.register, {
-            login: login,
-            email: email,
-            password: password
+    const query = gql`
+    mutation {
+        register(email: "${email}", login: "${login}", password: "${password}")
+    }`
+
+    return await request(serverGraphQl, query)
+        .then((data) => data)
+        .catch((err) => {
+            return rejectWithValue(err.response.errors[0].message)
         });
-        return response.data
-    } catch (err) {
-        return rejectWithValue(err.response.data)
-    }
+
 })
 
 
@@ -63,6 +73,7 @@ export const userSlice = createSlice({
             state.inProgress = true;
         })
         builder.addCase(fetchLogin.fulfilled, (state, action) => {
+
             state.isLogin = !!action.payload.token;
             state.email = action.payload.email;
             state.login = action.payload.login;
@@ -81,7 +92,7 @@ export const userSlice = createSlice({
         builder.addCase(fetchLogin.rejected, (state, action) => {
             state.inProgress = false;
             console.error(action)
-            state.error = action.payload ? action.payload : action.error.message;
+            state.error = action.payload ? action.payload : 'Error occurred';
         })
 
         builder.addCase(fetchRegister.pending, state => {
@@ -90,14 +101,14 @@ export const userSlice = createSlice({
 
         builder.addCase(fetchRegister.fulfilled, (state, action) => {
             state.inProgress = false;
-            state.registerMsg = action.payload;
+            state.registerMsg = action.payload.register;
             state.error = '';
         })
 
         builder.addCase(fetchRegister.rejected, (state, action) => {
             state.inProgress = false;
-            console.error(action)
-            state.error = action.payload ? action.payload : action.error.message;
+            console.log(action)
+            state.error = action.payload ? action.payload : 'Error occurred';
         })
     }
 })

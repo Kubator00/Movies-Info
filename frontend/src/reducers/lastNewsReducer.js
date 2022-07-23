@@ -1,11 +1,20 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../api";
+import api, {serverGraphQl} from "../api";
 import Axios from "axios"
+import {gql, request} from "graphql-request";
 
-export const fetchLastNews = createAsyncThunk('lastNews/fetch', async() => {
-    return await Axios.get(api.news.last).then(result => {
-        return result.data;
-    })
+export const fetchLastNews = createAsyncThunk('lastNews/fetch', async () => {
+    const query = gql`
+     {
+      newsList(limit:10, sort:"descending") {
+        name,
+        img,
+        _id
+      }
+    }
+    `
+
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 const initialState = {
@@ -18,7 +27,8 @@ export const lastNewsSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchLastNews.fulfilled, (state, action) => {
-            state.data = action.payload;
+            console.log(action.payload)
+            state.data = action.payload.newsList;
             state.error = '';
             state.completed = true;
         })

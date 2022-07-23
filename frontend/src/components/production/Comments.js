@@ -6,7 +6,8 @@ import Loading from "../Lodaing";
 import Error from "../Error";
 
 const Card = (props) => {
-    const {userLogin, content, date, _id:id} = props;
+    const {user, content, date, _id: id} = props;
+    const {login: userLogin, _id: userId} = user;
     const dispatch = useDispatch();
     return (
         <div className={'comment'}>
@@ -20,7 +21,7 @@ const Card = (props) => {
             <div className={'comment__content'}>
                 <div className={'comment__contentHeader'}>
                     <h3>{userLogin}</h3>
-                    {new Date(date).toLocaleString('en-En')}
+                    {new Date(parseInt(date)).toLocaleString('en-En')}
                 </div>
                 {content}
             </div>

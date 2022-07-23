@@ -1,60 +1,58 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
+import api, {serverGraphQl} from "../../api";
 import Axios from "axios"
+import {gql, request} from "graphql-request";
 
 export const fetchComments = createAsyncThunk('comments/fetch',
     async (props) => {
         const {page, pageSize, productionId} = props;
-        return await Axios.get(api.production.comment.get, {
-            params: {
-                page: page,
-                pageSize: pageSize,
-                productionId: productionId
-            }
-        }).then(result => {
-            return result.data;
-        })
+
+        const query = gql`
+            {
+                numberOfComments(productionId:"${productionId}")
+                commentList(productionId:"${productionId}",page:${page},pageSize:${pageSize})
+                {
+                    _id,
+                    content,
+                    date,
+                    user {
+                        login
+                        _id
+                    }
+                }
+            }`
+
+        return await request(serverGraphQl, query).then((data) => data);
     });
 
 export const addNewComment = createAsyncThunk('comments/add',
     async (props) => {
         const {productionId, content} = props;
-        return await Axios(
-            {
-                method: 'post',
-                url: api.production.comment.add,
-                headers: {
-                    "X-USER-TOKEN": localStorage.getItem('token'),
-                    "X-EMAIL": localStorage.getItem('email')
-                },
-                data: {
-                    productionId: productionId,
-                    content: content
-                }
-            }).then(result => {
-            return result.data;
-        })
+        const query = gql`
+           mutation {
+                addComment(
+                productionId: "${productionId}",
+                 userToken: "${localStorage.getItem('token')}", 
+                 userEmail: "${localStorage.getItem('email')}",
+                 content: """${content}""")
+            }`
+        return await request(serverGraphQl, query).then((data) => data);
     });
 
 
 export const deleteComment = createAsyncThunk('comments/delete',
     async (props) => {
         const {id} = props;
-        return await Axios(
-            {
-                method: 'delete',
-                url: api.production.comment.delete,
-                headers: {
-                    "X-USER-TOKEN": localStorage.getItem('token'),
-                    "X-EMAIL": localStorage.getItem('email')
-                },
-                data: {
-                    commentId: id
-                }
-            }).then(result => {
-            return result.data;
-        })
-    });
+        const query = gql`
+           mutation {
+               deleteComment(
+                commentId: "${id}",
+                 userToken: "${localStorage.getItem('token')}", 
+                 userEmail: "${localStorage.getItem('email')}")
+            }`
+        return await request(serverGraphQl, query).then((data) => data);
+});
+
 const initialState = {
     completed: false, comments: [], error: '', pageSize: 5, page: 1, numberOfComments: 0, setNewComment: false
 }
@@ -76,9 +74,9 @@ export const commentsSlice = createSlice({
                 state.completed = false;
         })
         builder.addCase(fetchComments.fulfilled, (state, action) => {
-            state.comments = [...state.comments, ...action.payload.comments];
+            state.comments = [...state.comments, ...action.payload.commentList];
             if (!state.numberOfComments)
-                state.numberOfComments = action.payload.numberOfComments
+                state.numberOfComments = action.payload.numberOfComments;
             state.page += 1;
             state.error = '';
             state.completed = true;

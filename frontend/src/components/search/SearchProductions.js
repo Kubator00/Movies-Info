@@ -10,6 +10,7 @@ import {
     setKeyword
 } from "../../reducers/production/searchProductionsReducer";
 import {serverImages} from "../../api";
+import Loading from "../Lodaing";
 
 const ProductionCard = (props) => {
     const {directoryName, name, category} = props;

@@ -1,17 +1,31 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api from "../../api";
+import api, {serverGraphQl} from "../../api";
 import Axios from "axios"
+import {request, gql} from 'graphql-request'
 
 export const fetchProduction = createAsyncThunk('production/info', async (props) => {
     const {movieName} = props;
+    const query = gql`
+        {
+          production(name: "${movieName}") {
+            _id,
+            name,
+            category,
+            releaseDate,
+            shortDescription,
+            trailerUrl,
+            directoryName,
+            directors,
+            writers,
+            mainStars,
+            rating{
+                rate,
+                numberOfRates
+            }
+          }
+        }`
 
-    return await Axios.get(api.production.info, {
-        params: {
-            movieName: decodeURI(movieName),
-        }
-    }).then(result => {
-        return result.data;
-    })
+    return await request(serverGraphQl, query).then((data) => data);
 });
 
 const initialState = {
@@ -31,7 +45,7 @@ export const productionInfoSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchProduction.fulfilled, (state, action) => {
-            state.data = action.payload;
+            state.data = action.payload.production;
             state.error = '';
             state.completed = true;
         })

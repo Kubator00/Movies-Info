@@ -10,7 +10,7 @@ module.exports = mongoose.model('users', {
     password: {
         type: String
     },
-    registerData: {
+    registerDate: {
         type: Date
     },
     isAdmin: {

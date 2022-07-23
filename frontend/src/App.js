@@ -12,7 +12,6 @@ import SeriesList from "./components/production/list/SeriesList";
 import SearchProductions from "./components/search/SearchProductions";
 import Footer from "./components/footer/Footer";
 
-
 const IsHomePage = ({value}) => {
     const dispatch = useDispatch();
     dispatch(setNavbarOpacity(value));
