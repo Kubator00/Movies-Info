@@ -110,4 +110,7 @@
     .comment{
         justify-content: flex-start;
     }
+    .comments h2 {
+        font-size: 1.5rem;
+    }
 }

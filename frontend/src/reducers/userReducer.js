@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
+import {serverGraphQl} from "../api";
 import {gql, GraphQLClient, request} from "graphql-request";
 
 export const fetchLogin = createAsyncThunk('user/login', async (props, {rejectWithValue}) => {
@@ -107,7 +106,7 @@ export const userSlice = createSlice({
 
         builder.addCase(fetchRegister.rejected, (state, action) => {
             state.inProgress = false;
-            console.log(action)
+            console.error(action)
             state.error = action.payload ? action.payload : 'Error occurred';
         })
     }

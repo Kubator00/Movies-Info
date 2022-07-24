@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setLoginPopUp} from "../../reducers/styleReducer";
 import * as yup from 'yup';
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import {fetchLogin, fetchRegister} from "../../reducers/user/loginReducer";
+import {fetchLogin, fetchRegister} from "../../reducers/userReducer";
 import Loading from "../Lodaing";
 import { Navigate } from "react-router-dom";
 

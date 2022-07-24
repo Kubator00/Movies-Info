@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import  {serverGraphQl} from "../api";
+import  {serverGraphQl} from "../../api";
 import {gql, request} from "graphql-request";
 
 export const fetchNews = createAsyncThunk('news/content', async (props) => {
@@ -11,7 +11,8 @@ export const fetchNews = createAsyncThunk('news/content', async (props) => {
             htmlContent,
             backgroundImg,
             _id,
-            author
+            author,
+            date
           }
         }`
 

@@ -42,9 +42,13 @@
     .production__recommendedCard{
         flex-basis: 25%;
     }
+    .production__recommendedContainer h2{
+        font-size: 1.5rem;
+    }
 }
 @media(max-width: 900px){
     .production__recommendedCard{
         flex-basis: 40%;
     }
+
 }

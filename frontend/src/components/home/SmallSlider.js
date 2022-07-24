@@ -3,7 +3,7 @@ import './SmallSlider.css';
 import {useDispatch, useSelector} from "react-redux";
 import Loading from "../Lodaing";
 import Error from "../Error";
-import {fetchLastNews} from "../../reducers/lastNewsReducer";
+import {fetchLastNews} from "../../reducers/news/lastNewsReducer";
 import {Link} from "react-router-dom";
 import {serverImages} from "../../api";
 import Slider from "react-slick";

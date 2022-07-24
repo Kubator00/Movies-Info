@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../api";
+import api, {serverGraphQl} from "../../api";
 import Axios from "axios"
 import {gql, request} from "graphql-request";
 

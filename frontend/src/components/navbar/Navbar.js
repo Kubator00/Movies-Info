@@ -3,7 +3,7 @@ import './Navbar.css'
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setLoginPopUp, setSearchScreen} from "../../reducers/styleReducer";
-import {logout} from "../../reducers/user/loginReducer";
+import {logout} from "../../reducers/userReducer";
 
 const Search = () => {
     const dispatch = useDispatch();
