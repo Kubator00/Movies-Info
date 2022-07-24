@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import './Comment.css'
 import Loading from "../Lodaing";
 import Error from "../Error";
+import {setLoginPopUp} from "../../reducers/styleReducer";
 
 const Card = (props) => {
     const {user, content, date, _id: id} = props;
@@ -63,6 +64,8 @@ export default function Comments(props) {
     }
 
     const addComment = () => {
+        if (!localStorage.getItem('isLogin'))
+            return dispatch(setLoginPopUp(true));
         dispatch(addNewComment({productionId: productionId, content: newCommentContent}));
         setNewCommentContent('');
 

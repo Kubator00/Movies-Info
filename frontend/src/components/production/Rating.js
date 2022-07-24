@@ -5,7 +5,6 @@ import {
     setProductionUserRating
 } from "../../reducers/production/productionUserRaitingReducer";
 import {setLoginPopUp} from "../../reducers/styleReducer";
-import Loading from "../Lodaing";
 import Error from "../Error";
 
 const initStars = [
@@ -28,7 +27,8 @@ export default function ProductionRating(props) {
     const {rating: userRate, completed, error} = useSelector(state => state.movieUserRating);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchProductionUserRating({id: id}))
+        if (localStorage.getItem("isLogin"))
+            dispatch(fetchProductionUserRating({id: id}))
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -63,8 +63,6 @@ export default function ProductionRating(props) {
         dispatch(setProductionUserRating({rating: parseInt(e.target.id) + 1, id: id}));
     }
 
-    if (!completed)
-        return <Loading/>
     if (error)
         return <Error error={error}/>
 
