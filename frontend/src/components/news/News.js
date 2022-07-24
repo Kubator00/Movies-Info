@@ -6,7 +6,7 @@ import Loading from "../Lodaing";
 import Error from "../Error";
 import './News.css'
 import SmallSlider from "../home/SmallSlider";
-import {serverImages} from "../../api";
+import {serverNewsImages} from "../../api";
 
 export default function News() {
     const [params] = useSearchParams();
@@ -32,7 +32,7 @@ export default function News() {
                 <div className={'news__author'}>Author: {author}</div>
                 <div>{new Date(parseInt(date)).toLocaleString('en-En')}</div>
             </div>
-            {backgroundImg && <img src={`${serverImages}/news/${id}/${backgroundImg}`}
+            {backgroundImg && <img src={`${serverNewsImages}/${id}/${backgroundImg}`}
                                    alt={'background'}/>}
             <div className={'news__content'} dangerouslySetInnerHTML={{__html: htmlContent}}/>
 

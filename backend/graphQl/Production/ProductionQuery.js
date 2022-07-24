@@ -1,5 +1,5 @@
 const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
-const Movie = require("../../database/models/MovieModel");
+const Movie = require("../../database/models/ProductionModel");
 const ProductionType = require("./ProductionType")
 const getFields = require('../../components/getFields')
 

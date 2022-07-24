@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import  {serverGraphQl} from "../../api";
+import {serverGraphQl, serverNewsImages} from "../../api";
 import {gql, request} from "graphql-request";
 
 export const fetchNews = createAsyncThunk('news/content', async (props) => {
@@ -30,6 +30,9 @@ export const newsContentSlice = createSlice({
         })
         builder.addCase(fetchNews.fulfilled, (state, action) => {
             state.data = action.payload.news;
+            console.log(state.data)
+            state.data.htmlContent = state.data.htmlContent.replace("${serverNewsImages}", `${serverNewsImages}/${state.data._id}`);
+            console.log(state.data.htmlContent)
             state.error = '';
             state.completed = true;
         })

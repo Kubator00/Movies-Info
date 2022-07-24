@@ -1,8 +1,8 @@
 const { GraphQLString, GraphQLInt} = require("graphql");
 
 const userAuthorization = require('../../components/userAuthorization')
-const MovieRating = require('../../database/models/MovieRating')
-const Movie = require('../../database/models/MovieModel')
+const ProductionRating = require('../../database/models/ProductionRatingModel')
+const Production = require('../../database/models/ProductionModel')
 const getUserId = require('../../components/getUserId')
 const mongoose = require("mongoose");
 const RatingType = require("./RatingType");
@@ -31,23 +31,23 @@ module.exports.AddRating = {
         const session = await mongoose.startSession();
         session.startTransaction();
         try {
-            a = await MovieRating
-                .findOne({'userId': userId, 'movieId': productionId})
+            a = await ProductionRating
+                .findOne({'userId': userId, 'productionId': productionId})
             if (a) {
                 a.rating = newRating;
             } else {
-                a = new MovieRating(
+                a = new ProductionRating(
                     {
-                        movieId: productionId,
+                        productionId: productionId,
                         userId: userId,
                         rating: newRating,
                     }
                 )
             }
             await a.save();
-            b = await MovieRating.find({'movieId': productionId});
+            b = await ProductionRating.find({'productionId': productionId});
             const avg = b.reduce((c, d) => c + d.rating, 0) / b.length;
-            const c = await Movie.findById(productionId);
+            const c = await Production.findById(productionId);
             c.rating.rate = avg;
             c.rating.numberOfRates = b.length;
             await c.save();
@@ -60,7 +60,7 @@ module.exports.AddRating = {
             session.endSession();
         }
 
-        return MovieRating.findOne({userId: userId, movieId: productionId});
+        return ProductionRating.findOne({userId: userId, productionId: productionId});
     }
 }
 

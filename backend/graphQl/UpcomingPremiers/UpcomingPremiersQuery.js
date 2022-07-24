@@ -1,4 +1,4 @@
-const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
+const {GraphQLList} = require("graphql");
 const UpcomingPremiersType = require("./UpcomingPremiersType")
 const UpcomingPremiers = require("../../database/models/UpcomingPremiereModel")
 

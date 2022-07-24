@@ -11,17 +11,3 @@ module.exports = new GraphQLObjectType({
 });
 
 
-const RatingType = new GraphQLObjectType({
-    name: 'Rating',
-    fields: () => ({
-        rate: {type: GraphQLFloat},
-        numberOfRates: {type: GraphQLFloat},
-    })
-})
-
-const SeeAlsoType = new GraphQLObjectType({
-    name: 'SeeAlso',
-    fields: () => ({
-        productionId: {type: GraphQLString},
-    })
-})

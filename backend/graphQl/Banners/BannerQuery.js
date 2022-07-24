@@ -1,6 +1,6 @@
-const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
+const {GraphQLList} = require("graphql");
 const BannerType = require("./BannerType")
-const Banner = require("../../database/models/BannersModel")
+const Banner = require("../../database/models/BannerModel")
 
 module.exports.BannerList = {
     type: new GraphQLList(BannerType),

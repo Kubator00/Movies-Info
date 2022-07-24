@@ -1,5 +1,4 @@
 const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
-const {parseResolveInfo} = require("graphql-parse-resolve-info");
 const News = require("../../database/models/NewsModel");
 const NewsType = require('./NewsType');
 const SORT_TYPE = require('../../const/SORT_TYPES')

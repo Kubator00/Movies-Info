@@ -1,8 +1,8 @@
 const {GraphQLString} = require("graphql");
-const MovieRating = require("../../database/models/MovieRating")
+const RatingType = require('./RatingType')
+const ProductionRating = require("../../database/models/ProductionRatingModel")
 const getUserId = require("../../components/getUserId");
 const userAuthorization = require("../../components/userAuthorization");
-const RatingType = require('./RatingType')
 
 module.exports.ProductionRating = {
     type: RatingType,
@@ -22,7 +22,7 @@ module.exports.ProductionRating = {
         } catch (err) {
             throw err;
         }
-        return MovieRating.findOne({userId: userId, movieId: productionId});
+        return ProductionRating.findOne({userId: userId, productionId: productionId});
 
     }
 }

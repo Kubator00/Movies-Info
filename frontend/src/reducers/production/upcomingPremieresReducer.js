@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
+import  {serverGraphQl} from "../../api";
 import {gql, request} from "graphql-request";
 
 export const fetchPremieres = createAsyncThunk('upcomingPremieres/fetch',async () => {
