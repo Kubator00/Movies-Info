@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './Navbar.css'
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setLoginPopUp, setSearchScreen} from "../../reducers/styleReducer";
+import {setLoginPopUp, setSearchScreen,setUserMenu} from "../../reducers/styleReducer";
 import {logout} from "../../reducers/userReducer";
 
 const Search = () => {
@@ -23,11 +23,10 @@ const Menu = () => {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [mobileMenuIsActive, setMobileMenuIsActive] = useState(false);
-    const [userMenuIsActive, setUserMenuIsActive] = useState(false);
-
+    const {userMenu: userMenuIsActive}=useSelector(state=>state.navbarStyle);
     useEffect(() => {
         if (userMenuIsActive && !user.isLogin)
-            setUserMenuIsActive(false);
+            setUserMenu(false);
     }, [user, userMenuIsActive])
 
     return (
@@ -38,12 +37,12 @@ const Menu = () => {
             }}/>
             <ul className={mobileMenuIsActive ? 'navbar__menuList navbar__menuList--active' : 'navbar__menuList'}>
                 <li>
-                    <Link to={'/movie/list'} className={'navbar__menuListItem'}>
+                    <Link to={'/movie/list'} className={'navbar__menuListItem'} onClick={()=>{setMobileMenuIsActive(false)}}>
                         Movies
                     </Link>
                 </li>
                 <li>
-                    <Link to={'/series/list'} className={'navbar__menuListItem'}>
+                    <Link to={'/series/list'} className={'navbar__menuListItem'}  onClick={()=>{setMobileMenuIsActive(false)}}>
                         Series
                     </Link></li>
                 <li>
@@ -52,12 +51,12 @@ const Menu = () => {
                             <img src='./icons/portrait.svg' className={'navbar__menuUserIcon'}/>
                             {user.login}
                             <img src='./icons/angle-small-down.svg' className={'navbar__menuArrowIcon'} onClick={() => {
-                                setUserMenuIsActive(!userMenuIsActive)
+                                dispatch(setUserMenu(!userMenuIsActive))
                             }}/>
                             {userMenuIsActive &&
-                                <ul className={'navbar__menuLogin'}>
+                                <ul className={'navbar__menuLogin'} onClick={()=>{dispatch(setUserMenu(false))}}>
                                     <li>
-                                        <Link to={''} className={'navbar__menuLoginLink'}>
+                                        <Link to={'/settings'} className={'navbar__menuLoginLink'}>
                                             <img src={'./icons/settings.svg'} alt={'logout icon'}
                                                  className={'navbar__menuLoginIcon'}/>
                                             <label>Settings</label>

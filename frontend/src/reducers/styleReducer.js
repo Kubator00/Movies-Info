@@ -4,7 +4,8 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
     navbarOpacity: true,
     loginPopUp: false,
-    searchScreen: false
+    searchScreen: false,
+    userMenu: false,
 }
 
 export const styleSlice = createSlice({
@@ -20,8 +21,11 @@ export const styleSlice = createSlice({
         setSearchScreen: (state, value) => {
             state.searchScreen = value.payload;
         },
+        setUserMenu: (state, value) => {
+            state.userMenu = value.payload;
+        },
     },
 })
 
 
-export const {setNavbarOpacity,setLoginPopUp,setSearchScreen} = styleSlice.actions;
+export const {setNavbarOpacity, setLoginPopUp, setSearchScreen,setUserMenu} = styleSlice.actions;

@@ -5,9 +5,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const PRIVATE_KEY = require("../../const/PRIVATE_KEY");
 const registrationSchema = require("../../validationSchemas/user/registrationSchema");
+const getUserId = require("../../components/getUserId");
+const userAuthorization = require("../../components/userAuthorization");
 
 module.exports.Login = {
-    name:'Login user',
+    name: 'Login user',
     description: 'Return user info and verify token',
     type: new GraphQLList(UserType),
     args: {
@@ -26,7 +28,7 @@ module.exports.Login = {
 }
 
 module.exports.Register = {
-    name:'Register user',
+    name: 'Register user',
     description: 'Create new user',
     type: GraphQLString,
     args: {
@@ -55,7 +57,7 @@ module.exports.Register = {
 
         let user = new User({
             email: email,
-            login:login,
+            login: login,
             password: hashedPassword,
             registerData: new Date().toISOString(),
             isAdmin: false
@@ -69,3 +71,100 @@ module.exports.Register = {
     }
 }
 
+module.exports.changePassword = {
+    name: 'Change password',
+    description: 'Change user password',
+    type: GraphQLString,
+    args: {
+        token: {type: GraphQLString},
+        email: {type: GraphQLString},
+        newPassword: {type: GraphQLString},
+        password: {type: GraphQLString},
+    },
+    async resolve(parent, args, context, info) {
+        const {newPassword, email, token, password} = args;
+        const schemaValidate = registrationSchema.validate(
+            {password: newPassword, email: email, login: 'test'}
+        );
+        if (schemaValidate.error)
+            throw new Error(schemaValidate.error?.message);
+
+        try {
+            const userId = await getUserId(email);
+            await userAuthorization(userId, token);
+        } catch (err) {
+            throw err;
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        let user;
+        try {
+            user = await User.findOne({email: email});
+            if (!user)
+                throw 'User not found';
+        } catch (err) {
+            throw new Error('User not found');
+        }
+        if (!user || !await bcrypt.compare(password, user.password))
+            throw new Error('Incorrect password');
+
+        user.password = hashedPassword;
+        try {
+            await user.save();
+        } catch (err) {
+            throw new Error('Error occurred');
+        }
+
+        return 'Change successful'
+    }
+}
+
+module.exports.changeEmail = {
+    name: 'Change email',
+    description: 'Change user email',
+    type: GraphQLString,
+    args: {
+        token: {type: GraphQLString},
+        email: {type: GraphQLString},
+        password: {type: GraphQLString},
+        newEmail: {type: GraphQLString},
+    },
+    async resolve(parent, args, context, info) {
+        console.log(args)
+        const {newEmail, email, token, password} = args;
+        const schemaValidate = registrationSchema.validate(
+            {password: password, email: newEmail, login: 'test'}
+        );
+        if (schemaValidate.error)
+            throw new Error(schemaValidate.error?.message);
+
+        try {
+            const userId = await getUserId(email);
+            await userAuthorization(userId, token);
+        } catch (err) {
+            throw err;
+        }
+
+
+        let user;
+        try {
+            user = await User.findOne({email: email});
+            if (!user)
+                throw 'User not found';
+        } catch (err) {
+            throw new Error('User not found');
+        }
+        if (!user || !await bcrypt.compare(password, user.password))
+            throw new Error('Incorrect password');
+
+        user.email = newEmail;
+        try {
+            await user.save();
+        } catch (err) {
+            throw new Error('Error occurred');
+        }
+
+        return 'Change successful'
+    }
+}

@@ -27,7 +27,7 @@ module.exports.ProductionList = {
         category: {type: GraphQLString}
     },
     resolve(parent, args, context, resolveInfo) {
-        const fieldsToSelect = getFields(resolveInfo, 'Production');
+        const fieldsToSelect = getFields(resolveInfo, 'Productions');
         let {orderBy = 'rating', descending: sort = 'true'} = args;
         sort = sort === 'true' ? '-1' : '1';
         orderBy = orderBy === 'rating' ? {'rating.rate': sort} : orderBy === 'release date' ? {'releaseDate': sort} : {'rating.numberOfRates': sort};
@@ -48,7 +48,7 @@ module.exports.SearchProduction = {
         name: {type: GraphQLString}
     },
     resolve(parent, args, context, resolveInfo) {
-        const fieldsToSelect = getFields(resolveInfo, 'Production');
+        const fieldsToSelect = getFields(resolveInfo, 'Productions');
         if (args.name)
             return Movie.find({name: {$regex: args.name, $options: 'i'}}).select(fieldsToSelect);
     }
@@ -62,7 +62,7 @@ module.exports.SingleProduction = {
         name: {type: GraphQLString}
     },
     resolve(parent, args, context, resolveInfo) {
-        const fieldsToSelect = getFields(resolveInfo, 'Production');
+        const fieldsToSelect = getFields(resolveInfo, 'Productions');
         if (args.name)
             return Movie.findOne({name: {$regex: args.name, $options: 'i'}}).select(fieldsToSelect);
     }

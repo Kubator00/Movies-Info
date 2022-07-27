@@ -1,5 +1,5 @@
 const {GraphQLObjectType, GraphQLString, GraphQLList} = require("graphql");
-const ProductionType = require("../Production/ProductionType");
+const ProductionType = require("../Productions/ProductionType");
 const Production = require("../../database/models/ProductionModel");
 
 

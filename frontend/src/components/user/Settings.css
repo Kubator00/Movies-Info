@@ -1,0 +1,147 @@
+:root{
+    --marginLeftValues:150px
+}
+
+.settings {
+    min-height: 80vh;
+    width: 100%;
+    max-width: 1400px;
+    min-width: 400px;
+
+}
+
+.accountInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 0 20px 0;
+    border-top: 2px solid rgb(224, 224, 224);
+    border-bottom: 2px solid rgb(224, 224, 224);
+}
+
+.accountInfo__header {
+    display: flex;
+    align-items: center;
+}
+
+.accountInfo__headerImg {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+}
+
+.accountInfo h2 {
+    margin: 0;
+}
+
+.accountInfo__elementList {
+    margin-left: var(--marginLeftValues);
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.accountInfo__element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.accountInfo__element h4 {
+    margin: 0;
+}
+
+.accountInfo__elementHeader {
+    width: 100px;
+    color: #ffbd00;
+}
+
+.accountInfo__elementValue {
+    width: 200px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.settings__form {
+    border-bottom: 2px solid #c2c2c2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    min-height: 400px;
+}
+
+.settings form {
+    margin-left: var(--marginLeftValues);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 270px;
+}
+
+
+.settings__formControl {
+    display: flex;
+    flex-direction: column;
+}
+
+label.settings__formControl {
+    font-size: 45px;
+}
+
+input.settings__formControl {
+    width: 300px;
+    height: 30px;
+    border: 2px solid #c2c2c2;
+    border-radius: 10px;
+}
+
+
+
+.settings__button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5b117;
+    color: white;
+    width: 300px;
+    height: 60px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+}
+
+
+.settings__button:hover {
+    background-color: #136eaa;
+}
+
+.errorMsg {
+    color: red;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+@media (max-width: 600px) {
+    .accountInfo__elementList {
+        margin-left: 0;
+    }
+    .accountInfo__headerImg{
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+    }
+
+}

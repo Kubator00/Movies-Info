@@ -3,7 +3,7 @@ const {
     GraphQLObjectType,
 } = require('graphql');
 
-const ProductionQuery = require('./Production/ProductionQuery');
+const ProductionQuery = require('./Productions/ProductionQuery');
 const NewsQuery = require('./News/NewsQuery');
 const BannerQuery = require('./Banners/BannerQuery');
 const UpcomingPremiersQuery = require('./UpcomingPremiers/UpcomingPremiersQuery');
@@ -11,8 +11,8 @@ const CommentQuery = require('./Comments/CommentQuery');
 const RecommendedProductionsQuery = require('./ReccomendedProductions/ReccomendedProductionsQuery');
 const UserMutation = require('./Users/UserMutation');
 const CommentMutation = require('./Comments/CommentMutation');
-const RatingQuery = require('./ProductionRating/RatingQuery');
-const RatingMutation = require('./ProductionRating/RatingMutation');
+const RatingQuery = require('./ProductionsRating/RatingQuery');
+const RatingMutation = require('./ProductionsRating/RatingMutation');
 
 const RootQuery = new GraphQLObjectType({
     name: 'Query',
@@ -40,7 +40,9 @@ const RootMutation = new GraphQLObjectType({
         register: UserMutation.Register,
         addComment: CommentMutation.AddComment,
         deleteComment: CommentMutation.DeleteComment,
-        addRating: RatingMutation.AddRating
+        addRating: RatingMutation.AddRating,
+        changePassword: UserMutation.changePassword,
+        changeEmail: UserMutation.changeEmail,
     })
 })
 

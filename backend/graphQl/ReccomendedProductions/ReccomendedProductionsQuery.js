@@ -1,6 +1,6 @@
 const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
 const Production = require("../../database/models/ProductionModel");
-const ProductionType = require("../Production/ProductionType");
+const ProductionType = require("../Productions/ProductionType");
 const getRandomInt = require("../../components/getRandomInt");
 
 
