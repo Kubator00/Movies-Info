@@ -42,13 +42,13 @@ const HomeBanner = () => {
     return (
         <div className={'home__banner'}>
             <div className={'home__bannerArrow'}>
-                <img src={'./icons/angle-circle-left.svg'} alt={'left arrow'}
+                <img src={'./icons/angle-circle-left_white.svg'} alt={'left arrow'}
                      onClick={() => {
                          moveBannerLeft(true)
                      }}/>
             </div>
             <div className={'home__bannerArrow'}>
-                <img src={'./icons/angle-circle-right.svg'} alt={'right arrow'}
+                <img src={'./icons/angle-circle-right_white.svg'} alt={'right arrow'}
                      onClick={() => {
                          moveBannerRight(true)
                      }}/>

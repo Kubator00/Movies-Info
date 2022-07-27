@@ -22,7 +22,7 @@ module.exports.Login = {
         if (!user || !await bcrypt.compare(password, user.password))
             throw new Error('Incorrect email or password');
 
-        const token = jwt.sign({id: user._id}, PRIVATE_KEY, {expiresIn: 50000});
+        const token = jwt.sign({id: user._id}, PRIVATE_KEY);
         return [{email: user.email, login: user.login, token: token, isAdmin: user.isAdmin}];
     }
 }

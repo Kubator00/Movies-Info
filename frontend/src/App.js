@@ -12,6 +12,7 @@ import SeriesList from "./components/production/list/SeriesList";
 import SearchProductions from "./components/search/SearchProductions";
 import AccountSettings from "./components/user/Settings";
 import Footer from "./components/footer/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const IsHomePage = ({value}) => {
     const dispatch = useDispatch();
@@ -41,7 +42,7 @@ function App() {
                     <Navbar/>
                     <div onClick={() => {
                         dispatch(setUserMenu(false))
-                    }} style={{width: '100%', display: "flex",flexDirection:'column', alignItems: 'center'}}>
+                    }} style={{width: '100%', display: "flex", flexDirection: 'column', alignItems: 'center'}}>
                         <Routes>
                             <Route path='' element={<IsHomePage value={true}/>}>
                                 <Route path='/' element={<Home/>}/>
@@ -53,7 +54,11 @@ function App() {
                                 <Route path='/movie' exact element={<ProductionInfo/>}/>
                                 <Route path='/series' exact element={<ProductionInfo/>}/>
                                 <Route path='/news' exact element={<News/>}/>
-                                <Route path='/settings' exact element={<AccountSettings/>}/>
+
+                                <Route element={<ProtectedRoute/>}>
+                                    <Route path='/settings' exact element={<AccountSettings/>}/>
+                                </Route>
+
                             </Route>
                         </Routes>
                         <Footer/>
@@ -61,8 +66,7 @@ function App() {
                 </Wrapper>
             </BrowserRouter>
         </>
-    )
-        ;
+    );
 }
 
 export default App;

@@ -26,24 +26,24 @@ export default function UserSettings() {
     return (
         <div className={'settings'}>
             <h1>Settings</h1>
-            <div className={'accountInfo'}>
-                <div className={'accountInfo__header'}>
-                    <img src={'./icons/portrait-black.svg'} className={'accountInfo__headerImg'}/>
+            <div className={'settings__accountInfo'}>
+                <div className={'settings__accountInfoHeader'}>
+                    <img src={'./icons/portrait.svg'} className={'settings__accountInfoHeaderImg'}/>
                     <h2>Account Info</h2>
                 </div>
-                <div className={'accountInfo__elementList'}>
-                    <div className={'accountInfo__element'}><h4 className={'accountInfo__elementHeader'}>E-MAIL:</h4>
-                        <span className={'accountInfo__elementValue'}>{email}</span>
+                <div className={'settings_accountInfoList'}>
+                    <div className={'settings_accountInfoListElement'}><h4 className={'settings_accountInfoListElementHeader'}>E-MAIL:</h4>
+                        <span className={'settings_accountInfoListElementValue'}>{email}</span>
                     </div>
-                    <div className={'accountInfo__element'}><h4 className={'accountInfo__elementHeader'}>LOGIN:</h4>
+                    <div className={'settings_accountInfoListElement'}><h4 className={'settings_accountInfoListElementHeader'}>LOGIN:</h4>
                         <span
-                            className={'accountInfo__elementValue'}>{login}</span>
+                            className={'settings_accountInfoListElementValue'}>{login}</span>
                     </div>
                 </div>
             </div>
             <div className="settings__form">
-                <div className={'accountInfo__header'}>
-                    <img src={'./icons/lock.svg'} className={'accountInfo__headerImg'}/>      <h2>Change your
+                <div className={'settings__accountInfoHeader'}>
+                    <img src={'./icons/lock.svg'} className={'settings__accountInfoHeaderImg'}/>      <h2>Change your
                     password</h2>
                 </div>
                 {changePasswordError && <h3 style={{"color": "red"}}>{changePasswordError}</h3>}
@@ -64,15 +64,15 @@ export default function UserSettings() {
                 >
                     <Form>
                         <label htmlFor="newPassword">New password</label>
-                        <ErrorMessage name='newPassword' component="div" class='errorMsg'/>
+                        <ErrorMessage name='newPassword' component="div" class='settings_errorMsg'/>
                         <Field type="password" name="newPassword" class="settings__formControl" autoComplete='off'/>
 
                         <label htmlFor="newPasswordConfirmation">Confirm new password</label>
-                        <ErrorMessage name='newPasswordConfirmation' component="div" class='errorMsg'/>
+                        <ErrorMessage name='newPasswordConfirmation' component="div" class='settings_errorMsg'/>
                         <Field type="password" name="newPasswordConfirmation" class="settings__formControl" autoComplete = 'off'/>
 
                         <label htmlFor="currentPassword">Current password</label>
-                        <ErrorMessage name='currentPassword' component="div" class='errorMsg'/>
+                        <ErrorMessage name='currentPassword' component="div" class='settings_errorMsg'/>
                         <Field type="password" name="currentPassword" class="settings__formControl"/>
 
                         <button type="submit" className="settings__button">Update password</button>
@@ -80,8 +80,8 @@ export default function UserSettings() {
                 </Formik>
             </div>
             <div className="settings__form">
-                <div className={'accountInfo__header'}>
-                    <img src={'./icons/lock.svg'} className={'accountInfo__headerImg'}/>
+                <div className={'settings__accountInfoHeader'}>
+                    <img src={'./icons/envelope.svg'} className={'settings__accountInfoHeaderImg'}/>
                     <h2>Change your email </h2>
                 </div>
                 {changeEmailError && <h3 style={{"color": "red"}}>{changeEmailError}</h3>}
@@ -101,11 +101,11 @@ export default function UserSettings() {
                 >
                     <Form>
                         <label htmlFor="newEmail">New e-mail</label>
-                        <ErrorMessage name='newEmail' component="div" class='errorMsg'/>
+                        <ErrorMessage name='newEmail' component="div" class='settings_errorMsg'/>
                         <Field type="text" name="newEmail" class="settings__formControl" autoComplete='off'/>
 
                         <label htmlFor="password">Current password</label>
-                        <ErrorMessage name='password' component="div" class='errorMsg'/>
+                        <ErrorMessage name='password' component="div" class='settings_errorMsg'/>
                         <Field type="password" name="password" class="settings__formControl"/>
 
                         <button type="submit" className="settings__button">Update e-mail</button>

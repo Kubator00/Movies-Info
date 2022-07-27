@@ -8,16 +8,16 @@ import {setLoginPopUp} from "../../reducers/styleReducer";
 import Error from "../Error";
 
 const initStars = [
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg',
-    'star1.svg'
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg',
+    'star_gray.svg'
 
 ]
 

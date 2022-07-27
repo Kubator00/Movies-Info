@@ -31,7 +31,7 @@ const Menu = () => {
 
     return (
         <div className={'navbar__menu'}>
-            <img src={mobileMenuIsActive ? './icons/cross.svg' : './icons/menu-burger.svg'} alt={'menu'}
+            <img src={mobileMenuIsActive ? './icons/cross_white.svg' : './icons/menu-burger_white.svg'} alt={'menu'}
                  className={'navbar__menuIcon'} onClick={() => {
                 setMobileMenuIsActive(!mobileMenuIsActive)
             }}/>
@@ -48,15 +48,15 @@ const Menu = () => {
                 <li>
                     {user.isLogin ?
                         <div className={'navbar__menuLoginContainer'}>
-                            <img src='./icons/portrait.svg' className={'navbar__menuUserIcon'}/>
+                            <img src='./icons/portrait_white.svg' className={'navbar__menuUserIcon'}/>
                             {user.login}
-                            <img src='./icons/angle-small-down.svg' className={'navbar__menuArrowIcon'} onClick={() => {
+                            <img src='./icons/angle-small-down_white.svg' className={'navbar__menuArrowIcon'} onClick={() => {
                                 dispatch(setUserMenu(!userMenuIsActive))
                             }}/>
                             {userMenuIsActive &&
                                 <ul className={'navbar__menuLogin'} onClick={()=>{dispatch(setUserMenu(false))}}>
                                     <li>
-                                        <Link to={'/settings'} className={'navbar__menuLoginLink'}>
+                                        <Link to={'/settings'} className={'navbar__menuLoginLink'}  onClick={()=>{setMobileMenuIsActive(false)}}>
                                             <img src={'./icons/settings.svg'} alt={'logout icon'}
                                                  className={'navbar__menuLoginIcon'}/>
                                             <label>Settings</label>
@@ -66,7 +66,7 @@ const Menu = () => {
                                     <li onClick={() => {
                                         dispatch(logout())
                                     }}>
-                                        <Link to={''} className={'navbar__menuLoginLink'}>
+                                        <Link to={''} className={'navbar__menuLoginLink'}  onClick={()=>{setMobileMenuIsActive(false)}}>
                                             <img src={'./icons/logout.svg'} alt={'logout icon'}
                                                  className={'navbar__menuLoginIcon'}/>
                                             <label>LogOut</label>

@@ -1,5 +1,5 @@
-:root{
-    --marginLeftValues:150px
+:root {
+    --marginLeftValues: 150px
 }
 
 .settings {
@@ -10,7 +10,7 @@
 
 }
 
-.accountInfo {
+.settings__accountInfo {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -21,22 +21,22 @@
     border-bottom: 2px solid rgb(224, 224, 224);
 }
 
-.accountInfo__header {
+.settings__accountInfoHeader {
     display: flex;
     align-items: center;
 }
 
-.accountInfo__headerImg {
+.settings__accountInfoHeaderImg {
     height: 25px;
     width: 25px;
     margin-right: 10px;
 }
 
-.accountInfo h2 {
+.settings__accountInfo h2 {
     margin: 0;
 }
 
-.accountInfo__elementList {
+.settings_accountInfoList {
     margin-left: var(--marginLeftValues);
     margin-top: 15px;
     display: flex;
@@ -44,7 +44,7 @@
     align-items: flex-start;
 }
 
-.accountInfo__element {
+.settings_accountInfoListElement {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -54,16 +54,16 @@
     padding: 10px;
 }
 
-.accountInfo__element h4 {
+.settings_accountInfoListElement h4 {
     margin: 0;
 }
 
-.accountInfo__elementHeader {
+.settings_accountInfoListElementHeader {
     width: 100px;
-    color: #ffbd00;
+    color: #f5b117;
 }
 
-.accountInfo__elementValue {
+.settings_accountInfoListElementValue {
     width: 200px;
     display: flex;
     justify-content: flex-start;
@@ -105,7 +105,6 @@ input.settings__formControl {
 }
 
 
-
 .settings__button {
     display: flex;
     flex-direction: column;
@@ -115,18 +114,18 @@ input.settings__formControl {
     color: white;
     width: 300px;
     height: 60px;
-    font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
     border: none;
+    font-size: 1.2rem;
 }
 
 
 .settings__button:hover {
-    background-color: #136eaa;
+    background-color: #de9f06;
 }
 
-.errorMsg {
+.settings_errorMsg {
     color: red;
     font-size: 0.7rem;
     margin-top: 5px;
@@ -135,13 +134,19 @@ input.settings__formControl {
 
 
 @media (max-width: 600px) {
-    .accountInfo__elementList {
-        margin-left: 0;
+    :root{
+        --marginLeftValues: 0;
     }
-    .accountInfo__headerImg{
+
+    .settings__accountInfoHeaderImg {
         width: 18px;
         height: 18px;
         margin-right: 5px;
+    }
+    .settings__button{
+        width: 100px;
+        height: 30px;
+        font-size: inherit;
     }
 
 }

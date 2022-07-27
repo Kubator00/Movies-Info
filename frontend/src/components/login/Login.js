@@ -45,7 +45,7 @@ const Register = (props) => {
             <div className={'signUp'}>
                 <div className={'signUp_cross'}>
                     <h1>Sign In</h1>
-                    <img src={'./icons/crossBlack.svg'} onClick={() => {
+                    <img src={'./icons/cross.svg'} onClick={() => {
                         dispatch(setLoginPopUp(false))
                     }} alt={'cross'}/>
                 </div>
@@ -103,7 +103,7 @@ const LogIn = (props) => {
             <div className={'signUp'}>
                 <div className={'signUp_cross'}>
                     <h1>Sign In</h1>
-                    <img src={'./icons/crossBlack.svg'} onClick={() => {
+                    <img src={'./icons/cross.svg'} onClick={() => {
                         dispatch(setLoginPopUp(false))
                     }} alt={'cross'}/>
                 </div>

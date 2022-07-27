@@ -54,7 +54,7 @@ export default function SearchProductions() {
             <div className={'search'}>
                 <div className={'search__header'}>
                     <label> Search for movies and series: </label>
-                    <img src={'./icons/crossBlack.svg'} className={'search__crossImg'} alt={'cross'} onClick={() => {
+                    <img src={'./icons/cross.svg'} className={'search__crossImg'} alt={'cross'} onClick={() => {
                         dispatch(setSearchScreen(false))
                     }}/>
                 </div>
