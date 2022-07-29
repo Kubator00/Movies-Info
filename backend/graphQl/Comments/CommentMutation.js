@@ -1,4 +1,4 @@
-const { GraphQLString} = require("graphql");
+const {GraphQLString} = require("graphql");
 const Comment = require("../../database/models/CommentModel")
 const userAuthorization = require('../../components/userAuthorization')
 const getUserId = require('../../components/getUserId')
@@ -16,14 +16,9 @@ module.exports.AddComment = {
     },
     async resolve(parent, args) {
         const {productionId, userToken, userEmail, content} = args;
-        let userId;
-        try {
-            userId = await getUserId(userEmail);
-            await userAuthorization(userId, userToken);
-        } catch (err) {
-            throw err;
-        }
-
+        const userId = await getUserId(userEmail);
+        await userAuthorization(userId, userToken);
+        
         const comment = new Comment({
             _id: new mongoose.Types.ObjectId(),
             productionId: productionId,
@@ -53,14 +48,8 @@ module.exports.DeleteComment = {
     },
     async resolve(parent, args) {
         const {commentId, userToken, userEmail} = args;
-        let userId;
-        try {
-            userId = await getUserId(userEmail);
-            await userAuthorization(userId, userToken);
-        } catch (err) {
-            throw err;
-        }
-
+        const userId = await getUserId(userEmail);
+        await userAuthorization(userId, userToken);
 
         try {
             await Comment.deleteOne({_id: commentId});

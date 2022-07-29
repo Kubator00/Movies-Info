@@ -89,12 +89,8 @@ module.exports.changePassword = {
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
 
-        try {
-            const userId = await getUserId(email);
-            await userAuthorization(userId, token);
-        } catch (err) {
-            throw err;
-        }
+        const userId = await getUserId(email);
+        await userAuthorization(userId, token);
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -139,13 +135,8 @@ module.exports.changeEmail = {
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
 
-        try {
-            const userId = await getUserId(email);
-            await userAuthorization(userId, token);
-        } catch (err) {
-            throw err;
-        }
-
+        const userId = await getUserId(email);
+        await userAuthorization(userId, token);
 
         let user;
         try {

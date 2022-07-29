@@ -1,4 +1,4 @@
-const { GraphQLString, GraphQLInt} = require("graphql");
+const {GraphQLString, GraphQLInt} = require("graphql");
 
 const userAuthorization = require('../../components/userAuthorization')
 const ProductionRating = require('../../database/models/ProductionRatingModel')
@@ -19,13 +19,8 @@ module.exports.AddRating = {
     },
     async resolve(parent, args) {
         const {productionId, userToken, userEmail, newRating} = args;
-        let userId;
-        try {
-            userId = await getUserId(userEmail);
-            await userAuthorization(userId, userToken);
-        } catch (err) {
-            throw err;
-        }
+        const userId = await getUserId(userEmail);
+        await userAuthorization(userId, userToken);
 
         let a, b;
         const session = await mongoose.startSession();

@@ -15,13 +15,9 @@ module.exports.ProductionRating = {
     },
     async resolve(parent, args) {
         const {productionId, userToken, userEmail} = args;
-        let userId;
-        try {
-            userId = await getUserId(userEmail);
-            await userAuthorization(userId, userToken);
-        } catch (err) {
-            throw err;
-        }
+        const userId = await getUserId(userEmail);
+        await userAuthorization(userId, userToken);
+
         return ProductionRating.findOne({userId: userId, productionId: productionId});
 
     }
