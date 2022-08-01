@@ -1,13 +1,11 @@
-const {GraphQLObjectType, GraphQLString, GraphQLFloat,  GraphQLInt} = require("graphql");
+module.exports = `
+    type UserRating{
+        _id:String
+        userId:String
+        rating:Float
+        productionId:String
+    }
+`
 
-module.exports = new GraphQLObjectType({
-    name: 'ProductionRating',
-    fields: () => ({
-        _id: {type: GraphQLString},
-        movieId: {type: GraphQLString},
-        userId: {type: GraphQLString},
-        rating: {type: GraphQLInt},
-    })
-});
 
 

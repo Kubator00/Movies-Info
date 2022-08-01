@@ -1,11 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const databaseConnect = require('./database/connection');
-const {graphqlHTTP} = require("express-graphql");
-const {RootSchema} = require('./graphQl/index');
-
+const PORT = require('./const/SERVER_PORT');
 const app = express();
-const PORT = 3010;
+const {startGraphQlServer} = require('./graphQl/index');
 
 app.use(cors());
 app.use(express.json());
@@ -20,14 +18,7 @@ app.get('/', (req, res) => {
     res.send('<h1>Film-Info Server</h1>')
 });
 
-app.use(
-    '/graphql',
-    graphqlHTTP({
-        schema: RootSchema,
-        graphiql: true
-    })
-);
-
+startGraphQlServer();
 module.exports.mongoDb = databaseConnect();
 
 

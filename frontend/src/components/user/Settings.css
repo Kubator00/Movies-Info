@@ -21,7 +21,7 @@
     border-bottom: 2px solid rgb(224, 224, 224);
 }
 
-.settings__accountInfoHeader {
+.settings__categoryHeader {
     display: flex;
     align-items: center;
 }
@@ -36,7 +36,7 @@
     margin: 0;
 }
 
-.settings_accountInfoList {
+.settings__accountInfoList {
     margin-left: var(--marginLeftValues);
     margin-top: 15px;
     display: flex;
@@ -67,6 +67,23 @@
     width: 200px;
     display: flex;
     justify-content: flex-start;
+}
+
+.settings__imgUploadForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0 10px 0;
+    border-bottom: 2px solid #c2c2c2;
+}
+
+.settings__inputFile {
+    margin: 15px 0 15px 0;
+}
+
+.settings__userImg {
+    width: 100px;
+    height: 100px;
 }
 
 .settings__form {
@@ -134,7 +151,7 @@ input.settings__formControl {
 
 
 @media (max-width: 600px) {
-    :root{
+    :root {
         --marginLeftValues: 0;
     }
 
@@ -143,7 +160,8 @@ input.settings__formControl {
         height: 18px;
         margin-right: 5px;
     }
-    .settings__button{
+
+    .settings__button {
         width: 100px;
         height: 30px;
         font-size: inherit;

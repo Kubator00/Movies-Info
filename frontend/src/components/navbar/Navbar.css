@@ -102,7 +102,7 @@
 
 .navbar__menu li {
     text-align: center;
-    height: 30px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,9 +126,12 @@
 }
 
 .navbar__menuUserIcon {
-    width: 30px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     margin-right: 7px;
+    border: 2px solid white;
+    border-radius: 20px;
+
 }
 
 .navbar__menuArrowIcon {

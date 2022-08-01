@@ -1,24 +1,10 @@
-const {GraphQLString} = require("graphql");
 const Comment = require("../../database/models/CommentModel")
-const userAuthorization = require('../../components/userAuthorization')
-const getUserId = require('../../components/getUserId')
 const mongoose = require("mongoose");
 
 module.exports.AddComment = {
-    type: GraphQLString,
-    name: 'Add Comment',
-    description: 'Add comment to production',
-    args: {
-        productionId: {type: GraphQLString},
-        userToken: {type: GraphQLString},
-        userEmail: {type: GraphQLString},
-        content: {type: GraphQLString},
-    },
+    mutation: `addComment(productionId:String, userToken:String, userEmail:String, content:String): String`,
     async resolve(parent, args) {
-        const {productionId, userToken, userEmail, content} = args;
-        const userId = await getUserId(userEmail);
-        await userAuthorization(userId, userToken);
-        
+        const {productionId, content, userId} = args;
         const comment = new Comment({
             _id: new mongoose.Types.ObjectId(),
             productionId: productionId,
@@ -38,19 +24,9 @@ module.exports.AddComment = {
 }
 
 module.exports.DeleteComment = {
-    type: GraphQLString,
-    name: 'Delete Comment',
-    description: 'Delete specified comment',
-    args: {
-        commentId: {type: GraphQLString},
-        userToken: {type: GraphQLString},
-        userEmail: {type: GraphQLString},
-    },
+    mutation: `deleteComment(commentId:String, userToken:String, userEmail:String): String`,
     async resolve(parent, args) {
-        const {commentId, userToken, userEmail} = args;
-        const userId = await getUserId(userEmail);
-        await userAuthorization(userId, userToken);
-
+        const {commentId} = args;
         try {
             await Comment.deleteOne({_id: commentId});
         } catch (err) {

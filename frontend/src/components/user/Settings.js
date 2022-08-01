@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Settings.css";
 import {useDispatch, useSelector} from "react-redux";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as yup from "yup";
-import {changePassword, changeEmail, logout} from '../../reducers/userReducer'
+import {changePassword, changeEmail, userImgUpload, logout} from '../../reducers/userReducer'
 import {Navigate} from "react-router-dom";
+import Loading from "../Lodaing";
+import {serverUserImage} from "../../api";
 
 export default function UserSettings() {
     const {
@@ -13,36 +15,64 @@ export default function UserSettings() {
         changePasswordMsg,
         changePasswordError,
         changeEmailMsg,
-        changeEmailError
+        changeEmailError,
+        inProgress
     } = useSelector(state => state.user);
+    const [file, setFile] = useState();
+
     const dispatch = useDispatch();
+
+    const [userImgLink,setUserImgLink] = useState(`${serverUserImage}/${login}.jpg`);
 
     if (changePasswordMsg || changeEmailMsg) {
         dispatch(logout());
         return <Navigate to={'/'}/>
     }
 
+    const fileAdd = (event) => {
+        setFile(event.target.files[0]);
+    }
+    const onFileUpload = () => {
+        dispatch(userImgUpload(file));
+    }
+    if (inProgress)
+        return <Loading/>
 
     return (
         <div className={'settings'}>
             <h1>Settings</h1>
             <div className={'settings__accountInfo'}>
-                <div className={'settings__accountInfoHeader'}>
+                <div className={'settings__categoryHeader'}>
                     <img src={'./icons/portrait.svg'} className={'settings__accountInfoHeaderImg'}/>
                     <h2>Account Info</h2>
                 </div>
-                <div className={'settings_accountInfoList'}>
-                    <div className={'settings_accountInfoListElement'}><h4 className={'settings_accountInfoListElementHeader'}>E-MAIL:</h4>
+                <div className={'settings__accountInfoList'}>
+                    <div className={'settings_accountInfoListElement'}><h4
+                        className={'settings_accountInfoListElementHeader'}>E-MAIL:</h4>
                         <span className={'settings_accountInfoListElementValue'}>{email}</span>
                     </div>
-                    <div className={'settings_accountInfoListElement'}><h4 className={'settings_accountInfoListElementHeader'}>LOGIN:</h4>
+                    <div className={'settings_accountInfoListElement'}><h4
+                        className={'settings_accountInfoListElementHeader'}>LOGIN:</h4>
                         <span
                             className={'settings_accountInfoListElementValue'}>{login}</span>
                     </div>
                 </div>
             </div>
+            <div className={'settings__imgUploadForm'}>
+                <div className={'settings__categoryHeader'}>
+                    <img src={`./icons/portrait.svg`} className={'settings__accountInfoHeaderImg'}/>
+                    <h2>Upload image</h2>
+                </div>
+                <div className={'settings__accountInfoList'}>
+                    <img src={`${userImgLink}`} onError={()=>{setUserImgLink(`./icons/portrait.svg`)}} className={'settings__userImg'} alt={'user avatar'}/>
+                    <input type="file" onChange={fileAdd} className={'settings__inputFile'} accept="image/jpeg"/>
+                    <button onClick={onFileUpload} className={'settings__button'}>
+                        Upload!
+                    </button>
+                </div>
+            </div>
             <div className="settings__form">
-                <div className={'settings__accountInfoHeader'}>
+                <div className={'settings__categoryHeader'}>
                     <img src={'./icons/lock.svg'} className={'settings__accountInfoHeaderImg'}/>      <h2>Change your
                     password</h2>
                 </div>
@@ -69,7 +99,8 @@ export default function UserSettings() {
 
                         <label htmlFor="newPasswordConfirmation">Confirm new password</label>
                         <ErrorMessage name='newPasswordConfirmation' component="div" class='settings_errorMsg'/>
-                        <Field type="password" name="newPasswordConfirmation" class="settings__formControl" autoComplete = 'off'/>
+                        <Field type="password" name="newPasswordConfirmation" class="settings__formControl"
+                               autoComplete='off'/>
 
                         <label htmlFor="currentPassword">Current password</label>
                         <ErrorMessage name='currentPassword' component="div" class='settings_errorMsg'/>
@@ -80,7 +111,7 @@ export default function UserSettings() {
                 </Formik>
             </div>
             <div className="settings__form">
-                <div className={'settings__accountInfoHeader'}>
+                <div className={'settings__categoryHeader'}>
                     <img src={'./icons/envelope.svg'} className={'settings__accountInfoHeaderImg'}/>
                     <h2>Change your email </h2>
                 </div>

@@ -5,15 +5,17 @@ import './Comment.css'
 import Loading from "../Lodaing";
 import Error from "../Error";
 import {setLoginPopUp} from "../../reducers/styleReducer";
+import {serverUserImage} from '../../api';
 
 const Card = (props) => {
     const {user, content, date, _id: id} = props;
     const {login: userLogin, _id: userId} = user;
     const dispatch = useDispatch();
+    const [userImgLink,setUserImgLink] = useState(`${serverUserImage}/${userLogin}.jpg`);
     return (
         <div className={'comment'}>
             <div className={'comment__imgHeader'}>
-                <img src={'./icons/portrait.svg'} alt={'user image'} className={'comment__userImg'}/>
+                <img src={userImgLink} onError={()=>{setUserImgLink(`./icons/portrait.svg`)}} alt={'user image'} className={'comment__userImg'}/>
                 {localStorage.getItem('login') === userLogin &&
                     <div style={{color: 'blue', cursor: 'pointer'}} onClick={() => {
                         dispatch(deleteComment({id: id}))

@@ -1,17 +1,9 @@
-const {GraphQLList, GraphQLString, GraphQLInt} = require("graphql");
 const Production = require("../../database/models/ProductionModel");
-const ProductionType = require("../Productions/ProductionType");
 const getRandomInt = require("../../components/getRandomInt");
 
 
 module.exports.RecommendedProductionsList = {
-    type: new GraphQLList(ProductionType),
-    name: 'Recommended Production List',
-    description: 'Return recommend products based on productionId passed in argument or if not passed return random productions',
-    args: {
-        productionId: {type: GraphQLString},
-        limit: {type: GraphQLInt}
-    },
+    query:`recommendedProductionList(productionId:String, limit: Int): [Production]`,
     async resolve(parent, args) {
         const {productionId,limit = 4} = args;
         let result = [];

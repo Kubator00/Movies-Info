@@ -1,21 +1,13 @@
-const {GraphQLList, GraphQLString} = require("graphql");
-const UserType = require("./UserType")
 const User = require("../../database/models/UserModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const PRIVATE_KEY = require("../../const/PRIVATE_KEY");
 const registrationSchema = require("../../validationSchemas/user/registrationSchema");
-const getUserId = require("../../components/getUserId");
-const userAuthorization = require("../../components/userAuthorization");
+
+
 
 module.exports.Login = {
-    name: 'Login user',
-    description: 'Return user info and verify token',
-    type: new GraphQLList(UserType),
-    args: {
-        email: {type: GraphQLString},
-        password: {type: GraphQLString}
-    },
+    mutation: `login(email: String, password: String): User`,
     async resolve(parent, args, context, info) {
         const {email, password} = args;
         const user = (await User.findOne({email: email}));
@@ -23,19 +15,13 @@ module.exports.Login = {
             throw new Error('Incorrect email or password');
 
         const token = jwt.sign({id: user._id}, PRIVATE_KEY);
-        return [{email: user.email, login: user.login, token: token, isAdmin: user.isAdmin}];
+
+        return {email: user.email, login: user.login, token: token, isAdmin: user.isAdmin};
     }
 }
 
 module.exports.Register = {
-    name: 'Register user',
-    description: 'Create new user',
-    type: GraphQLString,
-    args: {
-        email: {type: GraphQLString},
-        login: {type: GraphQLString},
-        password: {type: GraphQLString}
-    },
+    mutation: `register(email: String, login:String, password: String): String`,
     async resolve(parent, args, context, info) {
         const {login, password, email} = args;
         const schemaValidate = registrationSchema.validate(
@@ -71,32 +57,21 @@ module.exports.Register = {
     }
 }
 
-module.exports.changePassword = {
-    name: 'Change password',
-    description: 'Change user password',
-    type: GraphQLString,
-    args: {
-        token: {type: GraphQLString},
-        email: {type: GraphQLString},
-        newPassword: {type: GraphQLString},
-        password: {type: GraphQLString},
-    },
+module.exports.ChangePassword = {
+    mutation: `changePassword(userEmail: String, password: String, newPassword: String, userToken:String):String`,
     async resolve(parent, args, context, info) {
-        const {newPassword, email, token, password} = args;
+        const {newPassword,  userEmail, password} = args;
         const schemaValidate = registrationSchema.validate(
-            {password: newPassword, email: email, login: 'test'}
+            {password: newPassword, email: userEmail, login: 'test'}
         );
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
-
-        const userId = await getUserId(email);
-        await userAuthorization(userId, token);
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         let user;
         try {
-            user = await User.findOne({email: email});
+            user = await User.findOne({email: userEmail});
             if (!user)
                 throw 'User not found';
         } catch (err) {
@@ -116,31 +91,19 @@ module.exports.changePassword = {
     }
 }
 
-module.exports.changeEmail = {
-    name: 'Change email',
-    description: 'Change user email',
-    type: GraphQLString,
-    args: {
-        token: {type: GraphQLString},
-        email: {type: GraphQLString},
-        password: {type: GraphQLString},
-        newEmail: {type: GraphQLString},
-    },
+module.exports.ChangeEmail = {
+    mutation: `changeEmail(userEmail: String, password: String, newEmail: String, userToken:String):String`,
     async resolve(parent, args, context, info) {
-        console.log(args)
-        const {newEmail, email, token, password} = args;
+        const {newEmail, userEmail,  password} = args;
         const schemaValidate = registrationSchema.validate(
             {password: password, email: newEmail, login: 'test'}
         );
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
 
-        const userId = await getUserId(email);
-        await userAuthorization(userId, token);
-
         let user;
         try {
-            user = await User.findOne({email: email});
+            user = await User.findOne({email: userEmail});
             if (!user)
                 throw 'User not found';
         } catch (err) {

@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
+import {serverGraphQl} from "../../api";
 import {gql, request} from "graphql-request";
 
 export const fetchLastNews = createAsyncThunk('lastNews/fetch', async () => {
@@ -14,7 +13,7 @@ export const fetchLastNews = createAsyncThunk('lastNews/fetch', async () => {
     }
     `
 
-    return await request(serverGraphQl, query).then((data) => data);
+    return await request(serverGraphQl, query).then((data) =>{console.log(data); return data});
 });
 
 const initialState = {

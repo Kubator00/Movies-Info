@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setLoginPopUp, setSearchScreen,setUserMenu} from "../../reducers/styleReducer";
 import {logout} from "../../reducers/userReducer";
+import {serverUserImage} from "../../api";
 
 const Search = () => {
     const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Menu = () => {
         if (userMenuIsActive && !user.isLogin)
             setUserMenu(false);
     }, [user, userMenuIsActive])
-
+    const [userImgLink,setUserImgLink] = useState(`${serverUserImage}/${user.login}.jpg`);
     return (
         <div className={'navbar__menu'}>
             <img src={mobileMenuIsActive ? './icons/cross_white.svg' : './icons/menu-burger_white.svg'} alt={'menu'}
@@ -48,7 +49,7 @@ const Menu = () => {
                 <li>
                     {user.isLogin ?
                         <div className={'navbar__menuLoginContainer'}>
-                            <img src='./icons/portrait_white.svg' className={'navbar__menuUserIcon'}/>
+                            <img src={userImgLink}  onError={()=>{setUserImgLink(`./icons/portrait_white.svg`)}} className={'navbar__menuUserIcon'} alt={'user avatar'}/>
                             {user.login}
                             <img src='./icons/angle-small-down_white.svg' className={'navbar__menuArrowIcon'} onClick={() => {
                                 dispatch(setUserMenu(!userMenuIsActive))

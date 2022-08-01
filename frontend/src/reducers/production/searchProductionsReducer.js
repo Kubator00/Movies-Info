@@ -21,7 +21,7 @@ export const fetchRecommendedProductions = createAsyncThunk('searchProductions/r
     const {limit} = props;
     const query = gql`
       {
-        recommendedProductionsList(limit:${limit}){
+        recommendedProductionList(limit:${limit}){
             name,
             category,
             directoryName,
@@ -68,7 +68,7 @@ export const searchProductionsSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchRecommendedProductions.fulfilled, (state, action) => {
-            state.recommendedProductions = action.payload.recommendedProductionsList;
+            state.recommendedProductions = action.payload.recommendedProductionList;
             state.error = '';
             state.completed = true;
         })

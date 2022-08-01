@@ -1,11 +1,7 @@
-const {GraphQLList} = require("graphql");
-const BannerType = require("./BannerType")
 const Banner = require("../../database/models/BannerModel")
 
 module.exports.BannerList = {
-    type: new GraphQLList(BannerType),
-    name: "Banner List",
-    description: "Return a list of productions banners",
+    query: `bannerList: [Banner]`,
     resolve() {
         return Banner.find({});
     }

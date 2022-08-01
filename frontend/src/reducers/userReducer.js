@@ -17,7 +17,7 @@ export const fetchLogin = createAsyncThunk('user/login', async (props, {rejectWi
             }`
     return await client.request(query)
         .then(data => {
-            return data.login[0];
+            return data.login;
         }).catch((err) => {
             return rejectWithValue(err.response.errors[0].message)
         });
@@ -42,7 +42,7 @@ export const changePassword = createAsyncThunk('user/changePassword', async (pro
     const {newPassword, email, currentPassword} = props;
     const query = gql`
     mutation {
-        changePassword(email: "${email}", password: "${currentPassword}", newPassword: "${newPassword}", token:"${localStorage.getItem('token')}")
+        changePassword(userEmail: "${email}", password: "${currentPassword}", newPassword: "${newPassword}", userToken:"${localStorage.getItem('token')}")
     }`
 
     return await request(serverGraphQl, query)
@@ -54,14 +54,35 @@ export const changePassword = createAsyncThunk('user/changePassword', async (pro
 })
 
 export const changeEmail = createAsyncThunk('user/changeEmail', async (props, {rejectWithValue}) => {
-    const {currentEmail,newEmail, password} = props;
+    const {currentEmail, newEmail, password} = props;
     const query = gql`
     mutation {
-        changeEmail(email: "${currentEmail}", password: "${password}", newEmail: "${newEmail}", token:"${localStorage.getItem('token')}")
+        changeEmail(userEmail: "${currentEmail}", password: "${password}", newEmail: "${newEmail}", userToken:"${localStorage.getItem('token')}")
     }`
 
     return await request(serverGraphQl, query)
         .then((data) => data)
+        .catch((err) => {
+            return rejectWithValue(err.response.errors[0].message)
+        });
+
+})
+
+
+export const userImgUpload = createAsyncThunk('user/userImgUpload', async (props, {rejectWithValue}) => {
+    const query = gql`
+    mutation($file: Upload!){
+        uploadFile (file:$file,
+        userToken: "${localStorage.getItem('token')}",
+        userEmail: "${localStorage.getItem('email')}",
+        userLogin: "${localStorage.getItem('login')}")
+     }`
+
+    return await request(serverGraphQl, query,{file: props})
+        .then((data) => {
+            console.log(data);
+            return data;
+        })
         .catch((err) => {
             return rejectWithValue(err.response.errors[0].message)
         });
@@ -129,7 +150,6 @@ export const userSlice = createSlice({
         })
 
 
-
         builder.addCase(fetchRegister.pending, state => {
             state.inProgress = true;
         })
@@ -167,6 +187,20 @@ export const userSlice = createSlice({
             state.changeEmailError = '';
         })
         builder.addCase(changeEmail.rejected, (state, action) => {
+            state.inProgress = false;
+            console.error(action)
+            state.changeEmailError = action.payload ? action.payload : 'Error occurred';
+        })
+
+        builder.addCase(userImgUpload.pending, state => {
+            state.inProgress = true;
+        })
+        builder.addCase(userImgUpload.fulfilled, (state, action) => {
+            state.inProgress = false;
+            // state.changeEmailMsg = action.payload.changeEmail;
+            state.changeEmailError = '';
+        })
+        builder.addCase(userImgUpload.rejected, (state, action) => {
             state.inProgress = false;
             console.error(action)
             state.changeEmailError = action.payload ? action.payload : 'Error occurred';

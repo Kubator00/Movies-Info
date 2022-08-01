@@ -1,14 +1,10 @@
-const {GraphQLObjectType, GraphQLString} = require("graphql");
-
-module.exports = new GraphQLObjectType({
-    name: 'News',
-    fields: () => ({
-        _id: {type: GraphQLString},
-        name: {type: GraphQLString},
-        backgroundImg: {type: GraphQLString},
-        img: {type: GraphQLString},
-        htmlContent: {type: GraphQLString},
-        author: {type: GraphQLString},
-        date: {type: GraphQLString},
-    })
-});
+module.exports = `
+type News{
+            name:String,
+            htmlContent:String,
+            backgroundImg:String,
+            img:String,
+            _id:String,
+            author:String,
+            date:String
+}`

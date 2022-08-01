@@ -1,27 +1,12 @@
-const {GraphQLString, GraphQLInt} = require("graphql");
-
-const userAuthorization = require('../../components/userAuthorization')
 const ProductionRating = require('../../database/models/ProductionRatingModel')
 const Production = require('../../database/models/ProductionModel')
-const getUserId = require('../../components/getUserId')
 const mongoose = require("mongoose");
-const RatingType = require("./RatingType");
+
 
 module.exports.AddRating = {
-    type: RatingType,
-    name: 'Add rating',
-    description: 'Add new rating to production',
-    args: {
-        productionId: {type: GraphQLString},
-        userToken: {type: GraphQLString},
-        userEmail: {type: GraphQLString},
-        newRating: {type: GraphQLInt},
-    },
+    mutation:'addRating(productionId:String, newRating:Int, userToken:String, userEmail:String): UserRating',
     async resolve(parent, args) {
-        const {productionId, userToken, userEmail, newRating} = args;
-        const userId = await getUserId(userEmail);
-        await userAuthorization(userId, userToken);
-
+        const {productionId, newRating,userId} = args;
         let a, b;
         const session = await mongoose.startSession();
         session.startTransaction();

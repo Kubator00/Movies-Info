@@ -27,6 +27,7 @@ export const upcomingPremieresSlice = createSlice({
             state.completed = false;
         })
         builder.addCase(fetchPremieres.fulfilled, (state, action) => {
+            console.log(action.payload.upcomingPremiersList)
             state.data = action.payload.upcomingPremiersList;
             state.error = '';
             state.completed = true;

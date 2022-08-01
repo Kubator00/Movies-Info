@@ -1,12 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
+import {serverGraphQl} from "../../api";
 import {gql, request} from "graphql-request";
 
 export const fetchProductionUserRating = createAsyncThunk('movieUserRating/fetch', async(props) => {
     const {id} = props;
     const query = gql`
-       {
+            {
             productionRating(
                 productionId:"${id}",
                 userToken: "${localStorage.getItem('token')}", 
@@ -17,7 +16,7 @@ export const fetchProductionUserRating = createAsyncThunk('movieUserRating/fetch
             }
        }`
 
-    return await request(serverGraphQl, query).then((data) => data);
+    return await request(serverGraphQl, query).then((data) =>  data)    ;
 
 });
 
