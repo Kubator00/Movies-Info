@@ -1,21 +1,25 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {serverGraphQl} from "../api";
-import {gql, GraphQLClient, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../api";
+import { gql, GraphQLClient, request } from "graphql-request";
 
-export const fetchLogin = createAsyncThunk('user/login', async (props, {rejectWithValue}) => {
-
-    const {email, password} = props;
+export const fetchLogin = createAsyncThunk('user/login', async (props, { rejectWithValue }) => {
+    const { email, password } = props;
     const client = new GraphQLClient(serverGraphQl);
     const query = gql`
-        mutation {
-            login(email: "${email}", password: "${password}") {
+        mutation Mutation($email: String, $password: String) {
+            login(email: $email, password: $password) {
                     email,
                     login,
                     token,
                     isAdmin        
                 }
-            }`
-    return await client.request(query)
+            }`;
+
+    const variables = {
+        email, password
+    };
+
+    return await client.request(query, variables)
         .then(data => {
             return data.login;
         }).catch((err) => {
@@ -23,14 +27,18 @@ export const fetchLogin = createAsyncThunk('user/login', async (props, {rejectWi
         });
 })
 
-export const fetchRegister = createAsyncThunk('user/register', async (props, {rejectWithValue}) => {
-    const {login, email, password} = props;
+export const fetchRegister = createAsyncThunk('user/register', async (props, { rejectWithValue }) => {
+    const { login, email, password } = props;
     const query = gql`
-    mutation {
-        register(email: "${email}", login: "${login}", password: "${password}")
-    }`
+    mutation Register($email: String, $login: String, $password: String) {
+        register(email: $email, login: $login, password: $password)
+    }`;
 
-    return await request(serverGraphQl, query)
+    const variables = {
+        login, email, password
+    };
+
+    return await request(serverGraphQl, query, variables)
         .then((data) => data)
         .catch((err) => {
             return rejectWithValue(err.response.errors[0].message)
@@ -38,14 +46,21 @@ export const fetchRegister = createAsyncThunk('user/register', async (props, {re
 
 })
 
-export const changePassword = createAsyncThunk('user/changePassword', async (props, {rejectWithValue}) => {
-    const {newPassword, email, currentPassword} = props;
+export const changePassword = createAsyncThunk('user/changePassword', async (props, { rejectWithValue }) => {
+    const { newPassword, email, currentPassword } = props;
     const query = gql`
-    mutation {
-        changePassword(userEmail: "${email}", password: "${currentPassword}", newPassword: "${newPassword}", userToken:"${localStorage.getItem('token')}")
-    }`
+    mutation Register($userEmail: String, $password: String, $newPassword: String, $userToken: String){
+        changePassword(userEmail: $userEmail, password: $password, newPassword: $newPassword, userToken: $userToken)
+    }`;
 
-    return await request(serverGraphQl, query)
+    const variables = {
+        newPassword,
+        userEmail: email,
+        password: currentPassword,
+        userToken: localStorage.getItem('token')
+    };
+
+    return await request(serverGraphQl, query, variables)
         .then((data) => data)
         .catch((err) => {
             return rejectWithValue(err.response.errors[0].message)
@@ -53,14 +68,21 @@ export const changePassword = createAsyncThunk('user/changePassword', async (pro
 
 })
 
-export const changeEmail = createAsyncThunk('user/changeEmail', async (props, {rejectWithValue}) => {
-    const {currentEmail, newEmail, password} = props;
+export const changeEmail = createAsyncThunk('user/changeEmail', async (props, { rejectWithValue }) => {
+    const { currentEmail, newEmail, password } = props;
     const query = gql`
-    mutation {
-        changeEmail(userEmail: "${currentEmail}", password: "${password}", newEmail: "${newEmail}", userToken:"${localStorage.getItem('token')}")
-    }`
+    mutation ChangeEmail($userEmail: String, $password: String, $newEmail: String, $userToken: String){
+        changeEmail(userEmail: $userEmail, password: $password, newEmail: $newEmail, userToken: $userToken)
+    }`;
 
-    return await request(serverGraphQl, query)
+    const variables = {
+        newEmail,
+        userEmail: currentEmail,
+        password,
+        userToken: localStorage.getItem('token')
+    };
+
+    return await request(serverGraphQl, query, variables)
         .then((data) => data)
         .catch((err) => {
             return rejectWithValue(err.response.errors[0].message)
@@ -69,16 +91,24 @@ export const changeEmail = createAsyncThunk('user/changeEmail', async (props, {r
 })
 
 
-export const userImgUpload = createAsyncThunk('user/userImgUpload', async (props, {rejectWithValue}) => {
+export const changeAvatar = createAsyncThunk('user/userImgUpload', async (file, { rejectWithValue }) => {
     const query = gql`
-    mutation($file: Upload!){
-        uploadFile (file:$file,
-        userToken: "${localStorage.getItem('token')}",
-        userEmail: "${localStorage.getItem('email')}",
-        userLogin: "${localStorage.getItem('login')}")
+    mutation($file: Upload!, $userToken:String, $userEmail:String, $userLogin:String){
+        changeAvatar (
+        file: $file,
+        userToken: $userToken,
+        userEmail: $userEmail,
+        userLogin: $userLogin)
      }`
 
-    return await request(serverGraphQl, query,{file: props})
+    const variables = {
+        file: file,
+        userToken: localStorage.getItem('token'),
+        userEmail: localStorage.getItem('email'),
+        userLogin: localStorage.getItem('login'),
+    };
+
+    return await request(serverGraphQl, query, variables)
         .then((data) => {
             console.log(data);
             return data;
@@ -98,6 +128,8 @@ const initialState = {
     changePasswordError: '',
     changeEmailMsg: '',
     changeEmailError: '',
+    changeAvatarMsg: '',
+    changeAvatarError: '',
     email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
     login: localStorage.getItem('login') ? localStorage.getItem('login') : '',
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
@@ -192,20 +224,20 @@ export const userSlice = createSlice({
             state.changeEmailError = action.payload ? action.payload : 'Error occurred';
         })
 
-        builder.addCase(userImgUpload.pending, state => {
+        builder.addCase(changeAvatar.pending, state => {
             state.inProgress = true;
         })
-        builder.addCase(userImgUpload.fulfilled, (state, action) => {
+        builder.addCase(changeAvatar.fulfilled, (state, action) => {
             state.inProgress = false;
-            // state.changeEmailMsg = action.payload.changeEmail;
-            state.changeEmailError = '';
+            state.changeAvatarMsg = action.payload.changeAvatar;
+            state.changeAvatarError = '';
         })
-        builder.addCase(userImgUpload.rejected, (state, action) => {
+        builder.addCase(changeAvatar.rejected, (state, action) => {
             state.inProgress = false;
             console.error(action)
-            state.changeEmailError = action.payload ? action.payload : 'Error occurred';
+            state.changeAvatarError = action.payload ? action.payload : 'Error occurred';
         })
     }
 })
 
-export const {logout} = userSlice.actions;
+export const { logout } = userSlice.actions;

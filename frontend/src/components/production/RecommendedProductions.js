@@ -5,7 +5,7 @@ import {
 } from "../../reducers/production/recommendedProduction";
 import './ReccomendedProduction.css'
 import {useDispatch, useSelector} from "react-redux";
-import Loading from "../Lodaing";
+import Loading from "../Loading";
 import Error from "../Error";
 import {serverImages} from "../../api";
 import {Link} from "react-router-dom";

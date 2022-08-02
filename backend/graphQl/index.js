@@ -1,7 +1,7 @@
-const {ApolloServer, gql} = require('apollo-server-express');
-const {makeExecutableSchema} = require('@graphql-tools/schema')
-const {applyMiddleware} = require("graphql-middleware");
-const {graphqlUploadExpress} = require("graphql-upload");
+const { ApolloServer, gql } = require('apollo-server-express');
+const { makeExecutableSchema } = require('@graphql-tools/schema')
+const { applyMiddleware } = require("graphql-middleware");
+const { graphqlUploadExpress } = require("graphql-upload");
 const PORT = require('../const/SERVER_PORT');
 const getUserId = require("../components/getUserId");
 const userAuthorization = require("../components/userAuthorization");
@@ -18,7 +18,7 @@ const CommentType = require('./Comments/CommentType');
 const UserRatingType = require('./ProductionsRating/RatingType');
 const UpcomingPremiereType = require('./UpcomingPremiers/UpcomingPremiersType');
 const BannerType = require('./Banners/BannerType');
-const UploadType = require('./Upload/UploadType');
+const UploadType = require('./Users/UploadType');
 
 //queries
 const {
@@ -27,18 +27,17 @@ const {
     SearchProduction,
     NumberOfProductions
 } = require("./Productions/ProductionQuery");
-const {NewsList, SingleNews} = require("./News/NewsQuery");
-const {NumberOfComments, CommentList} = require("./Comments/CommentQuery");
-const {ProductionRating} = require("./ProductionsRating/RatingQuery");
-const {UpcomingPremiersList} = require("./UpcomingPremiers/UpcomingPremiersQuery");
-const {RecommendedProductionsList} = require("./ReccomendedProductions/ReccomendedProductionsQuery");
-const {BannerList} = require("./Banners/BannerQuery");
+const { NewsList, SingleNews } = require("./News/NewsQuery");
+const { NumberOfComments, CommentList } = require("./Comments/CommentQuery");
+const { ProductionRating } = require("./ProductionsRating/RatingQuery");
+const { UpcomingPremiersList } = require("./UpcomingPremiers/UpcomingPremiersQuery");
+const { RecommendedProductionsList } = require('./RecommendedProductions/RecommendedProductions');
+const { BannerList } = require("./Banners/BannerQuery");
 
 //mutations
-const {Login, Register, ChangePassword, ChangeEmail} = require("./Users/UserMutation");
-const {AddComment, DeleteComment} = require("./Comments/CommentMutation");
-const {AddRating} = require("./ProductionsRating/RatingMutation");
-const {UploadFile} = require("./Upload/UploadQuery");
+const { Login, Register, ChangePassword, ChangeEmail, ChangeAvatar } = require("./Users/UserMutation");
+const { AddComment, DeleteComment } = require("./Comments/CommentMutation");
+const { AddRating } = require("./ProductionsRating/RatingMutation");
 const express = require("express");
 
 
@@ -78,10 +77,10 @@ const typeDef = gql`
     ${ChangePassword.mutation}
     ${ChangeEmail.mutation}
     ${AddRating.mutation}
-    ${UploadFile.mutation}
+    ${ChangeAvatar.mutation}
     
   }`
-;
+    ;
 
 
 const resolvers = {
@@ -109,7 +108,7 @@ const resolvers = {
         addComment: async (parent, args, context, resolveInfo) => await AddComment.resolve(parent, args, context, resolveInfo),
         deleteComment: async (parent, args, context, resolveInfo) => await DeleteComment.resolve(parent, args, context, resolveInfo),
         addRating: async (parent, args, context, resolveInfo) => await AddRating.resolve(parent, args, context, resolveInfo),
-        uploadFile: async (parent, args, context, resolveInfo) => await UploadFile.resolve(parent, args, context, resolveInfo),
+        changeAvatar: async (parent, args, context, resolveInfo) => await ChangeAvatar.resolve(parent, args, context, resolveInfo),
     },
 
 
@@ -128,7 +127,7 @@ const resolvers = {
 
 
 const authMiddleware = async (resolve, root, args, context, info) => {
-    const {userEmail, userToken} = args;
+    const { userEmail, userToken } = args;
     args.userId = await getUserId(userEmail);
     await userAuthorization(args.userId, userToken);
     return await resolve(root, args, context, info);
@@ -144,24 +143,24 @@ const middleware = {
         addComment: async (resolve, parent, args, context, info) => await authMiddleware(resolve, parent, args, context, info),
         deleteComment: async (resolve, parent, args, context, info) => await authMiddleware(resolve, parent, args, context, info),
         addRating: async (resolve, parent, args, context, info) => await authMiddleware(resolve, parent, args, context, info),
-        uploadFile: async (resolve, parent, args, context, info) => await authMiddleware(resolve, parent, args, context, info),
+        changeAvatar: async (resolve, parent, args, context, info) => await authMiddleware(resolve, parent, args, context, info),
     }
 }
 
 
-const schema = makeExecutableSchema({typeDefs: typeDef, resolvers: resolvers})
+const schema = makeExecutableSchema({ typeDefs: typeDef, resolvers: resolvers })
 const schemaWithMiddleware = applyMiddleware(schema, middleware);
 
 
 module.exports.startGraphQlServer = async function () {
     const graphqlServer = new ApolloServer(
-        {schema: schemaWithMiddleware}
+        { schema: schemaWithMiddleware }
     );
     await graphqlServer.start();
     const graphqlApp = express();
     graphqlApp.use(graphqlUploadExpress());
-    graphqlServer.applyMiddleware({app: graphqlApp});
-    await new Promise((r) => graphqlApp.listen({port: PORT + 1}, r));
+    graphqlServer.applyMiddleware({ app: graphqlApp });
+    await new Promise((r) => graphqlApp.listen({ port: PORT + 1 }, r));
     console.log(`Graphql server is listening on port ${PORT + 1}`);
 }
 

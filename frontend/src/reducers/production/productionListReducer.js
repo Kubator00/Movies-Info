@@ -1,25 +1,34 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {serverGraphQl} from "../../api";
-import {gql, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { gql, request } from "graphql-request";
 
 export const fetchProductionList = createAsyncThunk('production/list', async (props) => {
-    const {page, pageSize, orderBy, descending, category} = props;
-    const query = gql`{
-    numberOfProductions(category:"${category}")
-      productionList(page:${page},pageSize:${pageSize},orderBy:"${orderBy}",descending:"${descending}",category:"${category}"){
-        _id,
-        name,
-        category,
-        directoryName,
-        releaseDate,
-        rating{
-          rate,
-          numberOfRates
+    const { page, pageSize, orderBy, descending, category } = props;
+    const query = gql`
+    query ProductionList($page: Int, $pageSize: Int, $orderBy: String, $descending: String, $category: String){
+        numberOfProductions(category: $category)
+        productionList(page:$page, pageSize:$pageSize, orderBy:$orderBy, descending: $descending, category: $category){
+            _id,
+            name,
+            category,
+            directoryName,
+            releaseDate,
+            rating{
+            rate,
+            numberOfRates
+            }
         }
-      }
+    }`;
+
+    const variables = {
+        category,
+        descending,
+        orderBy,
+        page,
+        pageSize
     }
-   `
-    return await request(serverGraphQl, query).then((data) => data);
+
+    return await request(serverGraphQl, query, variables).then((data) => data);
 });
 
 

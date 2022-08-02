@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import './BigSlider.css';
 import {useDispatch, useSelector} from "react-redux";
-import Loading from "../Lodaing";
+import Loading from "../Loading";
 import Error from "../Error";
 import {fetchPremieres} from "../../reducers/production/upcomingPremieresReducer";
 import { serverImages} from "../../api";

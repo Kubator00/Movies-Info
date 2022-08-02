@@ -1,27 +1,32 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {serverGraphQl} from "../../api";
-import {gql, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { gql, request } from "graphql-request";
 
-export const fetchProductionUserRating = createAsyncThunk('movieUserRating/fetch', async(props) => {
-    const {id} = props;
+export const fetchProductionUserRating = createAsyncThunk('movieUserRating/fetch', async (props) => {
+    const { id } = props;
     const query = gql`
-            {
-            productionRating(
-                productionId:"${id}",
-                userToken: "${localStorage.getItem('token')}", 
-                userEmail: "${localStorage.getItem('email')}"
-            )
-            {
-                rating
-            }
-       }`
+            query Query($productionId: String, $userToken: String, $userEmail: String) {
+                productionRating(
+                    productionId: $productionId,
+                    userToken: $userToken, 
+                    userEmail: $userEmail
+                )
+                {
+                    rating
+                }
+       }`;
 
-    return await request(serverGraphQl, query).then((data) =>  data)    ;
+    const variables = {
+        productionId: id,
+        userToken: localStorage.getItem('token'),
+        userEmail: localStorage.getItem('email')
+    };
 
+    return await request(serverGraphQl, query, variables).then((data) => data);
 });
 
-export const setProductionUserRating = createAsyncThunk('movieUserRating/set', async(props) => {
-    const {id, rating} = props;
+export const setProductionUserRating = createAsyncThunk('movieUserRating/set', async (props) => {
+    const { id, rating } = props;
     const query = gql`
        mutation{
             addRating(
@@ -42,7 +47,15 @@ const initialState = {
 }
 
 export const productionUserRatingSlice = createSlice({
-    name: 'movieUserRating', initialState, extraReducers: (builder) => {
+    name: 'movieUserRating', initialState,
+    reducers: {
+        cleanUpUserRating: (state) => {
+            state.completed = false;
+            state.rating = 0;
+            state.error = '';
+        },
+    },
+    extraReducers: (builder) => {
         builder.addCase(fetchProductionUserRating.pending, state => {
             state.setNewComment = false;
             state.completed = false;
@@ -74,3 +87,5 @@ export const productionUserRatingSlice = createSlice({
     }
 })
 
+
+export const { cleanUpUserRating } = productionUserRatingSlice.actions;

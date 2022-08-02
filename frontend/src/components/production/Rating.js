@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     fetchProductionUserRating,
-    setProductionUserRating
+    setProductionUserRating,
+    cleanUpUserRating
 } from "../../reducers/production/productionUserRaitingReducer";
-import {setLoginPopUp} from "../../reducers/styleReducer";
+import { setLoginPopUp } from "../../reducers/styleReducer";
 import Error from "../Error";
 
 const initStars = [
@@ -22,13 +23,16 @@ const initStars = [
 ]
 
 export default function ProductionRating(props) {
-    const {id} = props;
+    const { id } = props;
     const [stars, setStars] = useState(initStars);
-    const {rating: userRate, completed, error} = useSelector(state => state.movieUserRating);
+    const { rating: userRate, completed, error } = useSelector(state => state.movieUserRating);
     const dispatch = useDispatch();
     useEffect(() => {
         if (localStorage.getItem("isLogin"))
-            dispatch(fetchProductionUserRating({id: id}))
+            dispatch(fetchProductionUserRating({ id: id }))
+        return () => {
+            dispatch(cleanUpUserRating());
+        };
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -60,11 +64,11 @@ export default function ProductionRating(props) {
         if (!localStorage.getItem('isLogin')) {
             return dispatch(setLoginPopUp(true));
         }
-        dispatch(setProductionUserRating({rating: parseInt(e.target.id) + 1, id: id}));
+        dispatch(setProductionUserRating({ rating: parseInt(e.target.id) + 1, id: id }));
     }
 
     if (error)
-        return <Error error={error}/>
+        return <Error error={error} />
 
     return (
         <div className={'production__userRating'}>
@@ -72,8 +76,8 @@ export default function ProductionRating(props) {
             <div className={'production__userRatingStars'}>
                 {stars.map((star, i) =>
                     <img id={i.toString()} src={`./icons/${star}`} className={'production__userRatingStarImg'}
-                         alt={'star'} key={i}
-                         onMouseEnter={starsEnterHandler} onMouseLeave={starsLeaveHandler} onClick={starsClickHandler}/>
+                        alt={'star'} key={i}
+                        onMouseEnter={starsEnterHandler} onMouseLeave={starsLeaveHandler} onClick={starsClickHandler} />
                 )}
             </div>
         </div>

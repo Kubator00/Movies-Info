@@ -9,23 +9,23 @@ const registrationSchema = require("../../validationSchemas/user/registrationSch
 module.exports.Login = {
     mutation: `login(email: String, password: String): User`,
     async resolve(parent, args, context, info) {
-        const {email, password} = args;
-        const user = (await User.findOne({email: email}));
+        const { email, password } = args;
+        const user = (await User.findOne({ email: email }));
         if (!user || !await bcrypt.compare(password, user.password))
             throw new Error('Incorrect email or password');
 
-        const token = jwt.sign({id: user._id}, PRIVATE_KEY);
+        const token = jwt.sign({ id: user._id }, PRIVATE_KEY);
 
-        return {email: user.email, login: user.login, token: token, isAdmin: user.isAdmin};
+        return { email: user.email, login: user.login, token: token, isAdmin: user.isAdmin };
     }
 }
 
 module.exports.Register = {
     mutation: `register(email: String, login:String, password: String): String`,
     async resolve(parent, args, context, info) {
-        const {login, password, email} = args;
+        const { login, password, email } = args;
         const schemaValidate = registrationSchema.validate(
-            {login: login, password: password, email: email}
+            { login: login, password: password, email: email }
         );
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
@@ -33,11 +33,11 @@ module.exports.Register = {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const emailExist = await User.count({email: email});
+        const emailExist = await User.count({ email: email });
         if (emailExist > 0)
             throw new Error('Email is already in use');
 
-        const loginExist = await User.count({login: login});
+        const loginExist = await User.count({ login: login });
         if (loginExist > 0)
             throw new Error('Login is already in use');
 
@@ -60,9 +60,9 @@ module.exports.Register = {
 module.exports.ChangePassword = {
     mutation: `changePassword(userEmail: String, password: String, newPassword: String, userToken:String):String`,
     async resolve(parent, args, context, info) {
-        const {newPassword,  userEmail, password} = args;
+        const { newPassword, userEmail, password } = args;
         const schemaValidate = registrationSchema.validate(
-            {password: newPassword, email: userEmail, login: 'test'}
+            { password: newPassword, email: userEmail, login: 'test' }
         );
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
@@ -71,7 +71,7 @@ module.exports.ChangePassword = {
         const hashedPassword = await bcrypt.hash(newPassword, salt);
         let user;
         try {
-            user = await User.findOne({email: userEmail});
+            user = await User.findOne({ email: userEmail });
             if (!user)
                 throw 'User not found';
         } catch (err) {
@@ -94,16 +94,16 @@ module.exports.ChangePassword = {
 module.exports.ChangeEmail = {
     mutation: `changeEmail(userEmail: String, password: String, newEmail: String, userToken:String):String`,
     async resolve(parent, args, context, info) {
-        const {newEmail, userEmail,  password} = args;
+        const { newEmail, userEmail, password } = args;
         const schemaValidate = registrationSchema.validate(
-            {password: password, email: newEmail, login: 'test'}
+            { password: password, email: newEmail, login: 'test' }
         );
         if (schemaValidate.error)
             throw new Error(schemaValidate.error?.message);
 
         let user;
         try {
-            user = await User.findOne({email: userEmail});
+            user = await User.findOne({ email: userEmail });
             if (!user)
                 throw 'User not found';
         } catch (err) {
@@ -120,5 +120,20 @@ module.exports.ChangeEmail = {
         }
 
         return 'Change successful'
+    }
+}
+
+const fs = require('fs');
+module.exports.ChangeAvatar = {
+    mutation: `changeAvatar(userId:String, userToken:String, userEmail:String, userLogin:String, file: Upload):String`,
+    async resolve(parent, args) {
+        const { userLogin } = args;
+        const file = await args.file;
+        const { createReadStream, filename } = file.file;
+        const stream = createReadStream();
+
+        await stream.pipe(fs.createWriteStream(`./public/img/users/${userLogin}.jpg`));
+
+        return 'Change successful';
     }
 }

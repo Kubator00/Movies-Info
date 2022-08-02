@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './ProductionInfo.css'
 import {useDispatch, useSelector} from "react-redux";
 import {cleanUpInfo, fetchProduction} from "../../../reducers/production/productionInfoReducer";
-import Loading from "../../Lodaing";
+import Loading from "../../Loading";
 import Error from "../../Error";
 import {useSearchParams} from "react-router-dom";
 import ProductionRating from '../Rating'

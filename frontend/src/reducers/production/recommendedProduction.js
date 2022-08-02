@@ -1,20 +1,27 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import  {serverGraphQl} from "../../api";
-import {gql, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { gql, request } from "graphql-request";
 
 
 
-export const fetchRecommendedProductions = createAsyncThunk('recommendedProduction/fetch', async(props) => {
-    const {productionId,limit=4} = props;
+export const fetchRecommendedProductions = createAsyncThunk('recommendedProduction/fetch', async (props) => {
+    const { productionId, limit = 4 } = props;
     const query = gql`
-      {
-          recommendedProductionList(productionId:"${productionId}", limit: ${limit}){
-            name,
-            category,
-            directoryName,
+        query Query($productionId: String, $limit: Int){
+            recommendedProductionList(productionId: $productionId, limit: $limit){
+                name,
+                category,
+                directoryName,
         }
-      }`
-    return await request(serverGraphQl, query).then((data) => data);
+      }`;
+
+    const variables = {
+        productionId,
+        limit
+    };
+
+
+    return await request(serverGraphQl, query, variables).then((data) => data);
 });
 
 const initialState = {
@@ -46,4 +53,4 @@ export const recommendedProductionsSlice = createSlice({
     }
 })
 
-export const {cleanUpRecommendedProduction} = recommendedProductionsSlice.actions;
+export const { cleanUpRecommendedProduction } = recommendedProductionsSlice.actions;

@@ -9,7 +9,7 @@ const initialState = {
 }
 
 export const styleSlice = createSlice({
-    name: 'navbar',
+    name: 'style',
     initialState,
     reducers: {
         setNavbarOpacity: (state, value) => {

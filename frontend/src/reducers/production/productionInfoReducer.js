@@ -1,13 +1,12 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
-import {request, gql} from 'graphql-request'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { request, gql } from 'graphql-request'
 
 export const fetchProduction = createAsyncThunk('production/info', async (props) => {
-    const {movieName} = props;
+    const { movieName } = props;
     const query = gql`
-        {
-          production(name: "${movieName}") {
+        query Query($name: String){
+          production(name: $name) {
             _id,
             name,
             category,
@@ -25,7 +24,11 @@ export const fetchProduction = createAsyncThunk('production/info', async (props)
           }
         }`
 
-    return await request(serverGraphQl, query).then((data) => data);
+    const variables = {
+        name: movieName
+    }
+
+    return await request(serverGraphQl, query, variables).then((data) => data);
 });
 
 const initialState = {
@@ -57,4 +60,4 @@ export const productionInfoSlice = createSlice({
     }
 })
 
-export const {cleanUpInfo} = productionInfoSlice.actions;
+export const { cleanUpInfo } = productionInfoSlice.actions;

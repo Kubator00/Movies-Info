@@ -1,20 +1,20 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect } from "react";
 import './SmallSlider.css';
-import {useDispatch, useSelector} from "react-redux";
-import Loading from "../Lodaing";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../Loading";
 import Error from "../Error";
-import {fetchLastNews} from "../../reducers/news/lastNewsReducer";
-import {Link} from "react-router-dom";
-import {serverImages} from "../../api";
+import { fetchLastNews } from "../../reducers/news/lastNewsReducer";
+import { Link } from "react-router-dom";
+import { serverImages } from "../../api";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Card = (props) => {
-    const {_id: id, img, name} = props;
+    const { _id: id, img, name } = props;
     return <Link className={'smallSlider__card'} to={`/news?id=${id}`}>
         <div className={'smallSlider__imgContainer'}>
-            <img src={`${serverImages}/news/${id}/${img}`} alt={'news'}/>
+            <img src={`${serverImages}/news/${id}/${img}`} alt={'news'} />
         </div>
         <div className={'smallSlider__name'}>
             {name}
@@ -23,22 +23,22 @@ const Card = (props) => {
 }
 
 function SampleNextArrow(props) {
-    const {className, style, onClick} = props;
+    const { className, style, onClick } = props;
     return (
         <div
             className={`${className} smallSlider__arrow`}
-            style={{...style, background: 'orange'}}
+            style={{ ...style, background: 'orange' }}
             onClick={onClick}
         />
     );
 }
 
 function SamplePrevArrow(props) {
-    const {className, style, onClick} = props;
+    const { className, style, onClick } = props;
     return (
         <div
             className={`${className} smallSlider__arrow`}
-            style={{...style, background: 'orange'}}
+            style={{ ...style, background: 'orange' }}
             onClick={onClick}
         />
     );
@@ -50,8 +50,8 @@ const sliderSettings = {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
-    nextArrow: <SampleNextArrow/>,
-    prevArrow: <SamplePrevArrow/>,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
     responsive: [
         {
             breakpoint: 1300,
@@ -83,15 +83,15 @@ export default function SmallSlider(props) {
 
 
     if (!completed)
-        return <Loading/>
+        return <Loading />
     if (error)
-        return <Error/>
+        return <Error />
 
     return (
         <div className={props.containerClassName}>
             <Slider {...sliderSettings}>
                 {arr.map((news, i) => {
-                    return <Card {...news} key={i}/>
+                    return <Card {...news} key={i} />
                 })}
             </Slider>
         </div>

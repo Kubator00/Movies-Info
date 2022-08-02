@@ -4,7 +4,7 @@ import SmallSlider from "./SmallSlider";
 import BigSlider from "./BigSlider";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchBanners} from "../../reducers/production/bannersReducer";
-import Loading from "../Lodaing";
+import Loading from "../Loading";
 import Error from "../Error";
 import {serverImages} from "../../api";
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {cleanUpComments, fetchComments, addNewComment, deleteComment} from "../../reducers/production/commentsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import './Comment.css'
-import Loading from "../Lodaing";
+import Loading from "../Loading";
 import Error from "../Error";
 import {setLoginPopUp} from "../../reducers/styleReducer";
 import {serverUserImage} from '../../api';

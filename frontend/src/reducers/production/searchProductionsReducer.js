@@ -1,24 +1,28 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import  {serverGraphQl} from "../../api";
-import {gql, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { gql, request } from "graphql-request";
 
 
 export const fetchSearchProductions = createAsyncThunk('searchProductions/fetch', async (props) => {
-    const {keyword} = props;
+    const { keyword } = props;
     const query = gql`
-        {
-          searchProduction(name: "${keyword}") {
+        query SearchProduction($name: String) {
+          searchProduction(name: $name) {
             name,
             category,
             directoryName,
           }
         }`
 
-    return await request(serverGraphQl, query).then((data) => data);
+    const variables = {
+        name: keyword,
+    };
+
+    return await request(serverGraphQl, query, variables).then((data) => data);
 });
 
 export const fetchRecommendedProductions = createAsyncThunk('searchProductions/recommendedProductions', async (props) => {
-    const {limit} = props;
+    const { limit } = props;
     const query = gql`
       {
         recommendedProductionList(limit:${limit}){
@@ -80,4 +84,4 @@ export const searchProductionsSlice = createSlice({
     }
 })
 
-export const {cleanUpSearchProductions, setKeyword} = searchProductionsSlice.actions;
+export const { cleanUpSearchProductions, setKeyword } = searchProductionsSlice.actions;

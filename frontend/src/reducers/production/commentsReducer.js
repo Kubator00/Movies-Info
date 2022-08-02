@@ -1,16 +1,15 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import api, {serverGraphQl} from "../../api";
-import Axios from "axios"
-import {gql, request} from "graphql-request";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { serverGraphQl } from "../../api";
+import { gql, request } from "graphql-request";
 
 export const fetchComments = createAsyncThunk('comments/fetch',
     async (props) => {
-        const {page, pageSize, productionId} = props;
+        const { page, pageSize, productionId } = props;
 
         const query = gql`
-            {
-                numberOfComments(productionId:"${productionId}")
-                commentList(productionId:"${productionId}",page:${page},pageSize:${pageSize})
+            query Query($productionId: String,  $page: Int, $pageSize: Int) {
+                numberOfComments(productionId: $productionId)
+                commentList(productionId:$productionId, page:$page, pageSize:$pageSize)
                 {
                     _id,
                     content,
@@ -20,38 +19,59 @@ export const fetchComments = createAsyncThunk('comments/fetch',
                         _id
                     }
                 }
-            }`
+            }`;
 
-        return await request(serverGraphQl, query).then((data) => data);
+        const variables = {
+            productionId,
+            pageSize,
+            page
+        }
+
+        return await request(serverGraphQl, query, variables).then((data) => data);
     });
 
 export const addNewComment = createAsyncThunk('comments/add',
     async (props) => {
-        const {productionId, content} = props;
+        const { productionId, content } = props;
         const query = gql`
-           mutation {
+            mutation Mutation($productionId: String, $userToken: String, $userEmail: String, $content: String){
                 addComment(
-                productionId: "${productionId}",
-                 userToken: "${localStorage.getItem('token')}", 
-                 userEmail: "${localStorage.getItem('email')}",
-                 content: """${content}""")
+                productionId: $productionId,
+                 userToken: $userToken, 
+                 userEmail: $userEmail,
+                 content: $content)
             }`
-        return await request(serverGraphQl, query).then((data) => data);
+
+        const variables = {
+            productionId,
+            content,
+            userToken: localStorage.getItem('token'),
+            userEmail: localStorage.getItem('email'),
+        }
+
+        return await request(serverGraphQl, query, variables).then((data) => data);
     });
 
 
 export const deleteComment = createAsyncThunk('comments/delete',
     async (props) => {
-        const {id} = props;
+        const { id } = props;
         const query = gql`
-           mutation {
+            mutation DeleteComment($commentId: String, $userToken: String, $userEmail: String) {
                deleteComment(
-                commentId: "${id}",
-                 userToken: "${localStorage.getItem('token')}", 
-                 userEmail: "${localStorage.getItem('email')}")
-            }`
-        return await request(serverGraphQl, query).then((data) => data);
-});
+                commentId: $commentId,
+                userToken: $userToken, 
+                userEmail: $userEmail)
+            }`;
+
+        const variables = {
+            commentId: id,
+            userToken: localStorage.getItem('token'),
+            userEmail: localStorage.getItem('email'),
+        }
+
+        return await request(serverGraphQl, query, variables).then((data) => data);
+    });
 
 const initialState = {
     completed: false, comments: [], error: '', pageSize: 5, page: 1, numberOfComments: 0, setNewComment: false
@@ -124,4 +144,4 @@ export const commentsSlice = createSlice({
     }
 })
 
-export const {cleanUpComments} = commentsSlice.actions;
+export const { cleanUpComments } = commentsSlice.actions;

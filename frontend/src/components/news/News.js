@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchNews} from "../../reducers/news/newsContentReducer";
 import {useSearchParams} from "react-router-dom";
-import Loading from "../Lodaing";
+import Loading from "../Loading";
 import Error from "../Error";
 import './News.css'
 import SmallSlider from "../home/SmallSlider";

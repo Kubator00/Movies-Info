@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import PageButtons from "../../pageButtons/PageButtons";
 import {useSearchParams, useNavigate, Link} from "react-router-dom";
-import Loading from "../../Lodaing";
+import Loading from "../../Loading";
 import Error from "../../Error";
 import {serverImages} from "../../../api";
 import {fetchProductionList} from "../../../reducers/production/productionListReducer";
