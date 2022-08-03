@@ -1,6 +1,6 @@
-# Film-Info
+# Movies-Info
 
-📋 Film-Info is my project build in React and Node to improve my web skills.
+📋 Movies-Info is my project build in React and Node to improve my web skills.
 
 
 <h2>❗ Features </h2>
